@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
         disableMenu(binding, R.id.navigation_system);
         disableMenu(binding, R.id.navigation_lighting);
 
-        navController.addOnDestinationChangedListener((nc, destination, _bundle) ->
+        navController.addOnDestinationChangedListener((_, destination, _) ->
                 binding.navView.setVisibility(destination.getId() == R.id.action_settings ? GONE : VISIBLE));
     }
 
