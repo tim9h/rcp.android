@@ -1,5 +1,8 @@
 package dev.tim9h.rcpandroid;
 
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
+
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -36,6 +39,9 @@ public class MainActivity extends AppCompatActivity {
 
         disableMenu(binding, R.id.navigation_system);
         disableMenu(binding, R.id.navigation_lighting);
+
+        navController.addOnDestinationChangedListener((nc, destination, _bundle) ->
+                binding.navView.setVisibility(destination.getId() == R.id.action_settings ? GONE : VISIBLE));
     }
 
     private static void disableMenu(ActivityMainBinding binding, int id) {
@@ -56,6 +62,11 @@ public class MainActivity extends AppCompatActivity {
             return NavigationUI.onNavDestinationSelected(item, navController) || super.onOptionsItemSelected(item);
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        return navController.navigateUp() || super.onSupportNavigateUp();
     }
 
 }

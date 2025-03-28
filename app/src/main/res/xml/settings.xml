@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory android:title="@string/category_rest">
+        <EditTextPreference
+            android:key="rest_user"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:title="@string/user" />
+        <EditTextPreference
+            android:key="rest_password"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:title="@string/password" />
+        <EditTextPreference
+            android:key="rest_port"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:title="@string/port" />
+    </PreferenceCategory>
+
+</PreferenceScreen>

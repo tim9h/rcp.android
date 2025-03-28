@@ -22,4 +22,10 @@
         android:name="dev.tim9h.rcpandroid.ui.lighting.LightingFragment"
         android:label="@string/title_lighting"
         tools:layout="@layout/fragment_lighting" />
+
+    <fragment
+        android:id="@+id/action_settings"
+        android:name="dev.tim9h.rcpandroid.ui.settings.SettingsFragment"
+        android:label="@string/settings" />
+
 </navigation>
