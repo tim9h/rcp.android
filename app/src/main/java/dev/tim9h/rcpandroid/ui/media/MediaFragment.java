@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import dev.tim9h.rcpandroid.databinding.FragmentMediaBinding;
+import dev.tim9h.rcpandroid.ui.utils.BindingUtils;
 
 public class MediaFragment extends Fragment {
 
@@ -23,8 +24,17 @@ public class MediaFragment extends Fragment {
         binding = FragmentMediaBinding.inflate(inflater, container, false);
         var root = binding.getRoot();
 
-        final var textView = binding.textHome;
-        homeViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
+        final var textViewTitle = binding.txtTitle;
+        BindingUtils.setDynamicTextColor(textViewTitle, com.google.android.material.R.attr.colorPrimary);
+        homeViewModel.getTitle().observe(getViewLifecycleOwner(), textViewTitle::setText);
+
+        final var textViewArtist = binding.txtArtist;
+        homeViewModel.getArtist().observe(getViewLifecycleOwner(), textViewArtist::setText);
+
+        final var textViewAlbum = binding.txtAlbum;
+        homeViewModel.getAlbum().observe(getViewLifecycleOwner(), textViewAlbum::setText);
+
+
         return root;
     }
 
