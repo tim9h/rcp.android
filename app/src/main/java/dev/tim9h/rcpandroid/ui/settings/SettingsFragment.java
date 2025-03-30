@@ -40,29 +40,29 @@ public class SettingsFragment extends PreferenceFragmentCompat {
     public void onCreatePreferences(@Nullable Bundle savedInstanceState, @Nullable String rootKey) {
         setPreferencesFromResource(R.xml.settings, rootKey);
 
-        var user = findPreference("rest_user");
+        var user = findPreference("rest_api_username");
         if (user != null) {
-            user.setSummary(getStoredValue("rest_user", "Not set"));
+            user.setSummary(getStoredValue("rest_api_username", "Not set"));
             user.setOnPreferenceChangeListener((preference, newValue) -> {
                 preference.setSummary(newValue.toString());
                 return true;
             });
         }
 
-        EditTextPreference password = findPreference("rest_password");
+        EditTextPreference password = findPreference("rest_api_password");
         if (password != null) {
             password.setOnBindEditTextListener(editText -> editText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD));
-            password.setSummary(getStoredValue("rest_password", "").isEmpty() ? "Not set" : "••••••••");
+            password.setSummary(getStoredValue("rest_api_password", "").isEmpty() ? "Not set" : "••••••••");
             password.setOnPreferenceClickListener(preference -> {
                 preference.setSummary("••••••••");
                 return true;
             });
         }
 
-        EditTextPreference port = findPreference("rest_port");
+        EditTextPreference port = findPreference("rest_base_url");
         if (port != null) {
-            port.setSummary(getStoredValue("rest_port", "Not set"));
-            port.setOnBindEditTextListener(editText -> editText.setInputType(InputType.TYPE_CLASS_NUMBER));
+            port.setSummary(getStoredValue("rest_base_url", "Not set"));
+            port.setOnBindEditTextListener(editText -> editText.setInputType(InputType.TYPE_TEXT_VARIATION_URI));
             port.setOnPreferenceChangeListener((preference, newValue) -> {
                 preference.setSummary(newValue.toString());
                 return true;

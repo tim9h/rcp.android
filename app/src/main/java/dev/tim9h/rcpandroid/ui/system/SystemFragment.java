@@ -15,16 +15,14 @@ public class SystemFragment extends Fragment {
 
     private FragmentSystemBinding binding;
 
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
-        var dashboardViewModel =
-                new ViewModelProvider(this).get(SystemViewModel.class);
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        var viewModel = new ViewModelProvider(this).get(SystemViewModel.class);
 
         binding = FragmentSystemBinding.inflate(inflater, container, false);
         var root = binding.getRoot();
 
         final var textView = binding.textDashboard;
-        dashboardViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
+        viewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
         return root;
     }
 

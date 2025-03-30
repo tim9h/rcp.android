@@ -15,16 +15,14 @@ public class LightingFragment extends Fragment {
 
     private FragmentLightingBinding binding;
 
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
-        var notificationsViewModel =
-                new ViewModelProvider(this).get(LightingViewModel.class);
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        var viewModel = new ViewModelProvider(this).get(LightingViewModel.class);
 
         binding = FragmentLightingBinding.inflate(inflater, container, false);
         var root = binding.getRoot();
 
         final var textView = binding.textNotifications;
-        notificationsViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
+        viewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
         return root;
     }
 

@@ -15,5 +15,5 @@
     <string name="category_rest">REST</string>
     <string name="user">User</string>
     <string name="password">Password</string>
-    <string name="port">Port</string>
+    <string name="base_url">Base URL</string>
 </resources>
