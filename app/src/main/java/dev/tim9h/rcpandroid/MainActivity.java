@@ -1,14 +1,13 @@
 package dev.tim9h.rcpandroid;
 
-import static android.view.View.GONE;
-import static android.view.View.VISIBLE;
-
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -40,8 +39,14 @@ public class MainActivity extends AppCompatActivity {
         disableMenu(binding, R.id.navigation_system);
         disableMenu(binding, R.id.navigation_lighting);
 
-        navController.addOnDestinationChangedListener((_, destination, _) ->
-                binding.navView.setVisibility(destination.getId() == R.id.action_settings ? GONE : VISIBLE));
+        // fix AppBar hiding content
+        var navHost = findViewById(R.id.nav_host_fragment_activity_main);
+        ViewCompat.setOnApplyWindowInsetsListener(navHost, (view, windowInsets) -> {
+            var insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars());
+            view.setPadding(0, insets.top, 0, insets.bottom);
+            return WindowInsetsCompat.CONSUMED;
+        });
+
     }
 
     private static void disableMenu(ActivityMainBinding binding, int id) {
