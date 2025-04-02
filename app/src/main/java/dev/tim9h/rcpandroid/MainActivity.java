@@ -9,7 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
@@ -21,18 +21,24 @@ public class MainActivity extends AppCompatActivity {
 
     private NavController navController;
 
+    private ActivityMainBinding binding;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         DynamicColors.applyToActivityIfAvailable(this);
 
-        var binding = ActivityMainBinding.inflate(getLayoutInflater());
+        binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
         var appBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.navigation_media, R.id.navigation_system, R.id.navigation_lighting)
                 .build();
-        navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main);
+        var navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment_activity_main);
+        if (navHostFragment == null) {
+            throw new IllegalStateException("NavHostFragment not found");
+        }
+        navController = navHostFragment.getNavController();
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(binding.navView, navController);
 
@@ -43,10 +49,11 @@ public class MainActivity extends AppCompatActivity {
         var navHost = findViewById(R.id.nav_host_fragment_activity_main);
         ViewCompat.setOnApplyWindowInsetsListener(navHost, (view, windowInsets) -> {
             var insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars());
-            view.setPadding(0, insets.top, 0, insets.bottom);
+            var test = windowInsets.getInsets(WindowInsetsCompat.Type.navigationBars());
+            var navViewHeight = binding.navView.getHeight();
+            view.setPadding(0, insets.top, 0, insets.bottom + navViewHeight);
             return WindowInsetsCompat.CONSUMED;
         });
-
     }
 
     private static void disableMenu(ActivityMainBinding binding, int id) {
