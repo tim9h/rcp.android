@@ -24,8 +24,9 @@
         tools:layout="@layout/fragment_lighting" />
 
     <fragment
-        android:id="@+id/action_settings"
+        android:id="@+id/navigation_settings"
         android:name="dev.tim9h.rcpandroid.ui.settings.SettingsFragment"
-        android:label="@string/settings" />
+        android:label="@string/settings"
+        tools:layout="@layout/settings" />
 
 </navigation>

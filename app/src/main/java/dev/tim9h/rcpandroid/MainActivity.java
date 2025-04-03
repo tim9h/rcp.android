@@ -1,11 +1,13 @@
 package dev.tim9h.rcpandroid;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.navigation.NavController;
@@ -16,6 +18,7 @@ import androidx.navigation.ui.NavigationUI;
 import com.google.android.material.color.DynamicColors;
 
 import dev.tim9h.rcpandroid.databinding.ActivityMainBinding;
+import dev.tim9h.rcpandroid.ui.settings.SettingsActivity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -30,6 +33,9 @@ public class MainActivity extends AppCompatActivity {
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        var toolbar = binding.toolbar.findViewById(R.id.toolbar);
+        setSupportActionBar((Toolbar) toolbar);
 
         var appBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.navigation_media, R.id.navigation_system, R.id.navigation_lighting)
@@ -49,7 +55,6 @@ public class MainActivity extends AppCompatActivity {
         var navHost = findViewById(R.id.nav_host_fragment_activity_main);
         ViewCompat.setOnApplyWindowInsetsListener(navHost, (view, windowInsets) -> {
             var insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars());
-            var test = windowInsets.getInsets(WindowInsetsCompat.Type.navigationBars());
             var navViewHeight = binding.navView.getHeight();
             view.setPadding(0, insets.top, 0, insets.bottom + navViewHeight);
             return WindowInsetsCompat.CONSUMED;
@@ -71,7 +76,8 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         var id = item.getItemId();
         if (id == R.id.action_settings) {
-            return NavigationUI.onNavDestinationSelected(item, navController) || super.onOptionsItemSelected(item);
+            startActivity(new Intent(this, SettingsActivity.class));
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }
