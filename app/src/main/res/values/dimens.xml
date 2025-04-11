@@ -3,4 +3,5 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="rounded_corners">28dp</dimen>
+    <dimen name="menu_padding">14dp</dimen>
 </resources>
