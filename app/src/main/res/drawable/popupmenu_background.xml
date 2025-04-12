@@ -1,5 +1,5 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
-    <solid android:color="@color/m3_popupmenu_overlay_color" />
+    <solid android:color="?attr/colorSurfaceVariant" />
 
     <padding
         android:bottom="@dimen/menu_padding"
