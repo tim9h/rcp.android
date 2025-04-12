@@ -18,6 +18,7 @@
     <style name="popupOverflowMenu" parent="@style/Widget.Material3.PopupMenu">
         <item name="android:popupBackground">@drawable/popupmenu_background</item>
         <item name="android:textColor">?attr/colorOnSurface</item>
+        <item name="android:dropDownHorizontalOffset">@dimen/popupmenu_offset</item>
     </style>
 
 </resources>
