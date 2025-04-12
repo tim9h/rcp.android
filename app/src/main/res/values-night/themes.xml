@@ -1,0 +1,7 @@
+<resources>
+
+    <style name="Theme.RCPCompanion" parent="Theme.RCPCompanion.Base">
+        <item name="android:windowLightStatusBar">false</item>
+    </style>
+
+</resources>
