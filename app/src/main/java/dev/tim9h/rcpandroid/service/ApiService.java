@@ -2,7 +2,9 @@ package dev.tim9h.rcpandroid.service;
 
 import com.google.common.util.concurrent.ListenableFuture;
 
+import dev.tim9h.rcpandroid.model.Track;
 import retrofit2.http.Field;
+import retrofit2.http.GET;
 import retrofit2.http.POST;
 
 public interface ApiService {
@@ -24,5 +26,9 @@ public interface ApiService {
 
     @POST("shutdown")
     ListenableFuture<Void> shutdown(@Field("time") String time);
+
+
+    @GET("np")
+    ListenableFuture<Track> nowPlaying();
 
 }

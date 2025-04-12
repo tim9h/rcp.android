@@ -9,43 +9,23 @@ import com.google.common.util.concurrent.FutureCallback;
 import com.google.common.util.concurrent.Futures;
 import com.google.common.util.concurrent.ListenableFuture;
 
+import dev.tim9h.rcpandroid.model.Track;
 import dev.tim9h.rcpandroid.service.RetrofitClient;
 
 public class MediaViewModel extends ViewModel {
 
-    private final MutableLiveData<String> title;
+    private final MutableLiveData<String> error = new MutableLiveData<>();
 
-    private final MutableLiveData<String> artist;
+    private final MutableLiveData<Boolean> isLoading = new MutableLiveData<>();
 
-    private final MutableLiveData<String> album;
-
-    private MutableLiveData<Void> data = new MutableLiveData<>();
-
-    private MutableLiveData<String> error = new MutableLiveData<>();
-
-    private MutableLiveData<Boolean> isLoading = new MutableLiveData<>();
+    private final MutableLiveData<Track> track = new MutableLiveData<>();
 
     public MediaViewModel() {
-        title = new MutableLiveData<>();
-        title.setValue("I am the title");
-
-        artist = new MutableLiveData<>();
-        artist.setValue("I am the artist");
-
-        album = new MutableLiveData<>();
-        album.setValue("I am the album");
+        nowPlaying();
     }
 
-    public LiveData<String> getTitle() {
-        return title;
-    }
-
-    public LiveData<String> getArtist() {
-        return artist;
-    }
-
-    public LiveData<String> getAlbum() {
-        return album;
+    public LiveData<Track> getTrack() {
+        return track;
     }
 
     public MutableLiveData<Boolean> isLoading() {
@@ -56,16 +36,19 @@ public class MediaViewModel extends ViewModel {
         return error;
     }
 
-    public MutableLiveData<Void> getData() {
-        return data;
+    public <T> void processResponse(ListenableFuture<T> future) {
+        processResponse(future, null);
     }
 
-    public void processResponse(ListenableFuture<Void> future) {
+    public <T> void processResponse(ListenableFuture<T> future, MutableLiveData<T> data) {
+        isLoading.postValue(true);
         Futures.addCallback(future, new FutureCallback<>() {
             @Override
-            public void onSuccess(Void result) {
+            public void onSuccess(T result) {
                 isLoading.postValue(false);
-                data.postValue(result);
+                if (data != null) {
+                    data.postValue(result);
+                }
             }
 
             @Override
@@ -98,6 +81,12 @@ public class MediaViewModel extends ViewModel {
         isLoading.setValue(true);
         var future = RetrofitClient.getInstance().stop();
         processResponse(future);
+    }
+
+    public void nowPlaying() {
+        isLoading.setValue(true);
+        var future = RetrofitClient.getInstance().nowPlaying();
+        processResponse(future, track);
     }
 
 }
