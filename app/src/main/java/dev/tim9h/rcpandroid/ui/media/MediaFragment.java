@@ -14,6 +14,7 @@ import androidx.lifecycle.ViewModelProvider;
 import dev.tim9h.rcpandroid.R;
 import dev.tim9h.rcpandroid.databinding.FragmentMediaBinding;
 import dev.tim9h.rcpandroid.ui.utils.BindingUtils;
+import dev.tim9h.rcpandroid.ui.utils.ColorUtils;
 
 public class MediaFragment extends Fragment {
 
@@ -56,6 +57,12 @@ public class MediaFragment extends Fragment {
             viewModel.nowPlaying();
             binding.swiperefreshTrack.setRefreshing(false);
         });
+
+        binding.swiperefreshTrack.setFadingEdgeLength(200);
+        binding.swiperefreshTrack.setVerticalFadingEdgeEnabled(true);
+
+        binding.swiperefreshTrack.setColorSchemeColors(ColorUtils.getPrimary(getContext()));
+        binding.swiperefreshTrack.setProgressBackgroundColorSchemeColor(ColorUtils.getSurfaceVariant(getContext()));
 
         return root;
     }
