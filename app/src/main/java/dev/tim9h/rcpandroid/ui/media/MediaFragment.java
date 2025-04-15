@@ -13,7 +13,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import dev.tim9h.rcpandroid.R;
 import dev.tim9h.rcpandroid.databinding.FragmentMediaBinding;
-import dev.tim9h.rcpandroid.ui.utils.BindingUtils;
+import dev.tim9h.rcpandroid.model.Track;
 import dev.tim9h.rcpandroid.ui.utils.ColorUtils;
 
 public class MediaFragment extends Fragment {
@@ -26,20 +26,13 @@ public class MediaFragment extends Fragment {
         binding = FragmentMediaBinding.inflate(inflater, container, false);
         var root = binding.getRoot();
 
-        BindingUtils.setDynamicTextColor(binding.txtTitle, com.google.android.material.R.attr.colorPrimary);
+//        BindingUtils.setDynamicTextColor(binding.btnTitle, com.google.android.material.R.attr.colorPrimary);
 
-        viewModel.getTrack().observe(getViewLifecycleOwner(), track -> {
-            if (track.isPlaying()) {
-                binding.txtAlbum.setText(track.album());
-                binding.txtArtist.setText(track.artist());
-                binding.txtTitle.setText(track.title());
-            } else {
-                binding.txtAlbum.setText("");
-                binding.txtArtist.setText("");
-                binding.txtTitle.setText(R.string.not_playing);
+        viewModel.getTrack().observe(getViewLifecycleOwner(), this::handleTrackChanged);
 
-            }
-        });
+        binding.btnTitle.setOnClickListener(_ -> viewModel.openLastFmTrack());
+        binding.btnArtist.setOnClickListener(_ -> viewModel.openLastFmArtist());
+        binding.btnAlbum.setOnClickListener(_ -> viewModel.openLastFmAlbum());
 
         binding.btnPlaypause.setOnClickListener(_ -> viewModel.play());
         binding.btnNext.setOnClickListener(_ -> viewModel.next());
@@ -64,7 +57,34 @@ public class MediaFragment extends Fragment {
         binding.swiperefreshTrack.setColorSchemeColors(ColorUtils.getPrimary(getContext()));
         binding.swiperefreshTrack.setProgressBackgroundColorSchemeColor(ColorUtils.getSurfaceVariant(getContext()));
 
+        viewModel.getOpenBrowserIntent().observe(getViewLifecycleOwner(), intent -> {
+            if (intent != null) {
+                startActivity(intent);
+                viewModel.resetOpenBrowserIntent();
+            }
+        });
+
         return root;
+    }
+
+    private void handleTrackChanged(Track track) {
+        if (track.isPlaying()) {
+            binding.btnTitle.setText(track.title());
+            binding.btnArtist.setText(track.artist());
+            binding.btnAlbum.setText(track.album());
+
+            binding.btnTitle.setEnabled(true);
+            binding.btnArtist.setEnabled(true);
+            binding.btnAlbum.setEnabled(true);
+        } else {
+            binding.btnTitle.setText(R.string.not_playing);
+            binding.btnArtist.setText("");
+            binding.btnAlbum.setText("");
+
+            binding.btnTitle.setEnabled(false);
+            binding.btnArtist.setEnabled(false);
+            binding.btnAlbum.setEnabled(false);
+        }
     }
 
     @Override
