@@ -19,4 +19,17 @@
             android:title="@string/base_url" />
     </PreferenceCategory>
 
+    <PreferenceCategory android:title="@string/category_lastfm">
+        <EditTextPreference
+            android:key="lastfm_username"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:title="@string/user" />
+        <EditTextPreference
+            android:key="lastfm_apikey"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:title="@string/api_key" />
+    </PreferenceCategory>
+
 </PreferenceScreen>
