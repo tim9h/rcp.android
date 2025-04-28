@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/action_lastfm_profile_icon_button"
+        android:icon="@drawable/last_fm_logo_icon"
+        android:title="@string/last_fm_profile"
+        android:iconTint="?attr/colorOnSurface"
+        app:showAsAction="ifRoom" />
+</menu>

@@ -19,4 +19,5 @@
     <string name="not_playing">Not playing</string>
     <string name="category_lastfm">Last.fm</string>
     <string name="api_key">API Key</string>
+    <string name="last_fm_profile">Last.fm Profile</string>
 </resources>

@@ -14,8 +14,10 @@ import com.google.common.util.concurrent.ListenableFuture;
 
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 
 import dev.tim9h.rcpandroid.model.Track;
+import dev.tim9h.rcpandroid.preferences.PrefsHelper;
 import dev.tim9h.rcpandroid.service.RetrofitClient;
 
 public class MediaViewModel extends ViewModel {
@@ -25,10 +27,6 @@ public class MediaViewModel extends ViewModel {
     private final MutableLiveData<Boolean> isLoading = new MutableLiveData<>();
 
     private final MutableLiveData<Track> track = new MutableLiveData<>();
-
-    public MediaViewModel() {
-        nowPlaying();
-    }
 
     public LiveData<Track> getTrack() {
         return track;
@@ -43,6 +41,13 @@ public class MediaViewModel extends ViewModel {
     }
 
     private final MutableLiveData<Intent> openBrowserIntent = new MutableLiveData<>();
+
+    private static PrefsHelper preferences;
+
+    public MediaViewModel(PrefsHelper preferences) {
+        MediaViewModel.preferences = preferences;
+        nowPlaying();
+    }
 
     public LiveData<Intent> getOpenBrowserIntent() {
         return openBrowserIntent;
@@ -107,30 +112,36 @@ public class MediaViewModel extends ViewModel {
 
     public void openLastFmTrack() {
         if (track.getValue() != null) {
-            var url = String.format("https://www.last.fm/music/%s/_/%s", encodeValue(track.getValue().artist()), encodeValue(track.getValue().title()));
-            var intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-            openBrowserIntent.setValue(intent);
+            openUrl("https://www.last.fm/music/%s/_/%s", track.getValue().artist(), track.getValue().title());
         }
     }
 
     public void openLastFmArtist() {
         if (track.getValue() != null) {
-            var url = String.format("https://www.last.fm/music/%s", encodeValue(track.getValue().artist()));
-            var intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-            openBrowserIntent.setValue(intent);
+            openUrl("https://www.last.fm/music/%s", track.getValue().artist());
         }
     }
 
     public void openLastFmAlbum() {
         if (track.getValue() != null) {
-            var url = String.format("https://www.last.fm/music/%s/%s/", encodeValue(track.getValue().artist()), encodeValue(track.getValue().album()));
-            var intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-            openBrowserIntent.setValue(intent);
+            openUrl("https://www.last.fm/music/%s/%s/", track.getValue().artist(), track.getValue().album());
         }
     }
 
-    private static String encodeValue(String value) {
-        return URLEncoder.encode(value, StandardCharsets.UTF_8);
+    public void openLastFmProfile() {
+        var username = preferences.getString("lastfm_username", "");
+        if (!"".equals(username)) {
+            openUrl("https://www.last.fm/user/%s", username);
+        } else {
+            openUrl("https://www.last.fm/");
+        }
+    }
+
+    private void openUrl(String address, String... params) {
+        var encodedParams = Arrays.stream(params).map(param -> URLEncoder.encode(param, StandardCharsets.UTF_8)).toArray();
+        var url = String.format(address, encodedParams);
+        var intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+        openBrowserIntent.setValue(intent);
     }
 
 }

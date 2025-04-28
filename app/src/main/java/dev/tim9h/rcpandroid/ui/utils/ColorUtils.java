@@ -31,4 +31,8 @@ public class ColorUtils {
         return getDynamicColor(ctx, com.google.android.material.R.attr.colorSurfaceVariant);
     }
 
+    public static int getColorOnSurface(Context ctx) {
+        return getDynamicColor(ctx, com.google.android.material.R.attr.colorOnSurface);
+    }
+
 }
