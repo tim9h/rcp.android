@@ -27,7 +27,6 @@ public interface ApiService {
     @POST("shutdown")
     ListenableFuture<Void> shutdown(@Field("time") String time);
 
-
     @GET("np")
     ListenableFuture<Track> nowPlaying();
 

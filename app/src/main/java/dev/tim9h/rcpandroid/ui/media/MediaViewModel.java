@@ -46,7 +46,7 @@ public class MediaViewModel extends ViewModel {
 
     public MediaViewModel(PrefsHelper preferences) {
         MediaViewModel.preferences = preferences;
-        nowPlaying();
+//        nowPlaying();
     }
 
     public LiveData<Intent> getOpenBrowserIntent() {

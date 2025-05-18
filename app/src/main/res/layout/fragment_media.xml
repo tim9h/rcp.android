@@ -43,6 +43,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
                     android:layout_marginRight="20dp"
+                    android:enabled="false"
                     tools:text="Royal Beggars" />
 
                 <Button
@@ -52,6 +53,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
                     android:layout_marginRight="20dp"
+                    android:enabled="false"
                     android:paddingVertical="0dp"
                     tools:text="Architects" />
 
@@ -62,6 +64,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
                     android:layout_marginRight="20dp"
+                    android:enabled="false"
                     tools:text="Holy Hell" />
 
             </LinearLayout>

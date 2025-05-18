@@ -1,6 +1,8 @@
 package dev.tim9h.rcpandroid.ui.media;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -11,9 +13,12 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.LifecycleEventObserver;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -27,8 +32,16 @@ public class MediaFragment extends Fragment {
 
     private FragmentMediaBinding binding;
 
+    private MediaViewModel viewModel;
+
+    private Runnable nowPlayingRunnable;
+
+    private final Handler handler = new Handler(Looper.getMainLooper());
+
+    private static final long NP_REFRESH_INTERVAL_MS = 5000;
+
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        var viewModel = new ViewModelProvider(this, new ViewModelProvider.Factory() {
+        viewModel = new ViewModelProvider(this, new ViewModelProvider.Factory() {
             @NonNull
             @Override
             public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
@@ -55,8 +68,6 @@ public class MediaFragment extends Fragment {
             Log.e("RCP", error);
             Toast.makeText(getContext(), error, Toast.LENGTH_SHORT).show();
         });
-
-        viewModel.isLoading().observe(getViewLifecycleOwner(), loading -> Log.d("RCP", "Loading: " + loading));
 
         binding.swiperefreshTrack.setOnRefreshListener(() -> {
             Log.d("RCP", "Refreshing current track");
@@ -101,6 +112,38 @@ public class MediaFragment extends Fragment {
         });
 
         return root;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        nowPlayingRunnable = () -> {
+            if (isAdded() && getView() != null && viewModel != null) {
+                Log.d("RCP", "Updating NC periodically");
+                viewModel.nowPlaying();
+                handler.postDelayed(nowPlayingRunnable, NP_REFRESH_INTERVAL_MS);
+            }
+        };
+
+        getViewLifecycleOwner().getLifecycle().addObserver((LifecycleEventObserver) (_, event) -> {
+            if (event == Lifecycle.Event.ON_START) {
+                npPeriodically();
+            } else if (event == Lifecycle.Event.ON_STOP) {
+                stopNpPeriodically();
+            }
+        });
+    }
+
+    private void npPeriodically() {
+        handler.removeCallbacks(nowPlayingRunnable);
+        handler.post(nowPlayingRunnable);
+        Log.d("RCP", "Started repeated nowPlaying task");
+    }
+
+    private void stopNpPeriodically() {
+        handler.removeCallbacks(nowPlayingRunnable);
+        Log.d("RCP", "Stopped repeated nowPlaying task");
     }
 
     private void handleTrackChanged(Track track) {
