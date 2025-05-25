@@ -1,4 +1,4 @@
-package dev.tim9h.rcpandroid.service;
+package dev.tim9h.rcpandroid.service.client;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -6,9 +6,7 @@ import android.util.Log;
 
 import androidx.preference.PreferenceManager;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
+import dev.tim9h.rcpandroid.service.api.RcpApi;
 import okhttp3.Authenticator;
 import okhttp3.Credentials;
 import okhttp3.OkHttpClient;
@@ -17,8 +15,8 @@ import retrofit2.Retrofit;
 import retrofit2.adapter.guava.GuavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class RetrofitClient {
-    private static ApiService apiService;
+public class RcpClient {
+    private static RcpApi apiService;
 
     private static Context applicationContext;
 
@@ -29,8 +27,6 @@ public class RetrofitClient {
     private static Authenticator auth;
 
     private static String baseUrl;
-
-    private static final ExecutorService executorService = Executors.newFixedThreadPool(4);
 
     public static void initialize(Context context) {
         if (applicationContext == null) {
@@ -59,7 +55,7 @@ public class RetrofitClient {
         Log.d("RCP", "init: baseUrl: " + baseUrl + " username: " + username + " password: ******");
     }
 
-    public static ApiService getInstance() {
+    public static RcpApi getInstance() {
         if (apiService == null) {
             var loggingInterceptor = new HttpLoggingInterceptor();
             loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
@@ -70,13 +66,9 @@ public class RetrofitClient {
                     .addCallAdapterFactory(GuavaCallAdapterFactory.create())
                     .client(client)
                     .build();
-            apiService = retrofit.create(ApiService.class);
+            apiService = retrofit.create(RcpApi.class);
         }
         return apiService;
-    }
-
-    public static ExecutorService getExecutorService() {
-        return executorService;
     }
 
     public static void unregisterPreferenceChangeListener() {
