@@ -1,4 +1,4 @@
-package dev.tim9h.rcpandroid.service.api;
+package dev.tim9h.rcpandroid.backend.api;
 
 import dev.tim9h.rcpandroid.model.Track;
 import retrofit2.Call;

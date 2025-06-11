@@ -1,12 +1,12 @@
-package dev.tim9h.rcpandroid.service.client;
+package dev.tim9h.rcpandroid.backend.client;
 
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 
 import androidx.preference.PreferenceManager;
 
-import dev.tim9h.rcpandroid.service.api.RcpApi;
+import dev.tim9h.rcpandroid.App;
+import dev.tim9h.rcpandroid.backend.api.RcpApi;
 import okhttp3.Authenticator;
 import okhttp3.Credentials;
 import okhttp3.OkHttpClient;
@@ -16,34 +16,30 @@ import retrofit2.adapter.guava.GuavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RcpClient {
-    private static RcpApi apiService;
 
-    private static Context applicationContext;
+    private RcpApi api;
 
     private static SharedPreferences preferences;
 
     private static SharedPreferences.OnSharedPreferenceChangeListener changeListener;
 
-    private static Authenticator auth;
+    private Authenticator auth;
 
-    private static String baseUrl;
+    private String baseUrl;
 
-    public static void initialize(Context context) {
-        if (applicationContext == null) {
-            applicationContext = context.getApplicationContext();
-            preferences = PreferenceManager.getDefaultSharedPreferences(applicationContext);
-            changeListener = (_, key) -> {
-                if (key != null && key.startsWith("rest_")) {
-                    Log.i("RCP", "Settings changed");
-                    initClient();
-                }
-            };
-            preferences.registerOnSharedPreferenceChangeListener(changeListener);
-            initClient();
-        }
+    public RcpClient() {
+        preferences = PreferenceManager.getDefaultSharedPreferences(App.getAppContext());
+        changeListener = (_, key) -> {
+            if (key != null && key.startsWith("rest_")) {
+                Log.i("RCP", "Settings changed");
+                applyChangedPreferences();
+            }
+        };
+        preferences.registerOnSharedPreferenceChangeListener(changeListener);
+        applyChangedPreferences();
     }
 
-    private static void initClient() {
+    private void applyChangedPreferences() {
         baseUrl = preferences.getString("rest_base_url", "");
         var username = preferences.getString("rest_api_username", "");
         var password = preferences.getString("rest_api_password", "");
@@ -51,12 +47,12 @@ public class RcpClient {
             String credential = Credentials.basic(username, password);
             return response.request().newBuilder().header("Authorization", credential).build();
         };
-        apiService = null;
+        api = null;
         Log.d("RCP", "init: baseUrl: " + baseUrl + " username: " + username + " password: ******");
     }
 
-    public static RcpApi getInstance() {
-        if (apiService == null) {
+    public RcpApi getApi() {
+        if (api == null) {
             var loggingInterceptor = new HttpLoggingInterceptor();
             loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
             var client = new OkHttpClient.Builder().addInterceptor(loggingInterceptor).authenticator(auth).build();
@@ -66,9 +62,9 @@ public class RcpClient {
                     .addCallAdapterFactory(GuavaCallAdapterFactory.create())
                     .client(client)
                     .build();
-            apiService = retrofit.create(RcpApi.class);
+            api = retrofit.create(RcpApi.class);
         }
-        return apiService;
+        return api;
     }
 
     public static void unregisterPreferenceChangeListener() {

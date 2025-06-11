@@ -12,9 +12,11 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
+import dev.tim9h.rcpandroid.backend.service.LastFmService;
+import dev.tim9h.rcpandroid.backend.service.RcpService;
 import dev.tim9h.rcpandroid.model.Track;
+import dev.tim9h.rcpandroid.model.lastfm.TrackInfoResponse;
 import dev.tim9h.rcpandroid.preferences.PrefsHelper;
-import dev.tim9h.rcpandroid.service.client.RcpClient;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -26,6 +28,22 @@ public class MediaViewModel extends ViewModel {
     private final MutableLiveData<Boolean> isLoading = new MutableLiveData<>();
 
     private final MutableLiveData<Track> track = new MutableLiveData<>();
+
+    private final MutableLiveData<dev.tim9h.rcpandroid.model.lastfm.Track> trackInfo = new MutableLiveData<>();
+
+    private final MutableLiveData<Intent> openBrowserIntent = new MutableLiveData<>();
+
+    private static PrefsHelper preferences;
+
+    private final RcpService rcpService;
+
+    private final LastFmService lastFmService;
+
+    public MediaViewModel(PrefsHelper preferences) {
+        MediaViewModel.preferences = preferences;
+        lastFmService = new LastFmService();
+        rcpService = new RcpService();
+    }
 
     public LiveData<Track> getTrack() {
         return track;
@@ -39,15 +57,6 @@ public class MediaViewModel extends ViewModel {
         return error;
     }
 
-    private final MutableLiveData<Intent> openBrowserIntent = new MutableLiveData<>();
-
-    private static PrefsHelper preferences;
-
-    public MediaViewModel(PrefsHelper preferences) {
-        MediaViewModel.preferences = preferences;
-//        nowPlaying();
-    }
-
     public LiveData<Intent> getOpenBrowserIntent() {
         return openBrowserIntent;
     }
@@ -58,7 +67,7 @@ public class MediaViewModel extends ViewModel {
 
     public void play() {
         isLoading.setValue(true);
-        var call = RcpClient.getInstance().play();
+        var call = rcpService.play();
         call.enqueue(createCallback());
     }
 
@@ -80,37 +89,64 @@ public class MediaViewModel extends ViewModel {
 
     public void next() {
         isLoading.setValue(true);
-        var call = RcpClient.getInstance().next();
+        var call = rcpService.next();
         call.enqueue(createCallback());
     }
 
     public void previous() {
         isLoading.setValue(true);
-        var call = RcpClient.getInstance().previous();
+        var call = rcpService.previous();
         call.enqueue(createCallback());
     }
 
     public void stop() {
         isLoading.setValue(true);
-        var call = RcpClient.getInstance().stop();
+        var call = rcpService.stop();
         call.enqueue(createCallback());
     }
 
     public void nowPlaying() {
         isLoading.setValue(true);
-        var call = RcpClient.getInstance().nowPlaying();
+        try {
+            var call = rcpService.nowPlaying();
+            call.enqueue(new Callback<>() {
+                @Override
+                public void onResponse(Call<Track> call, Response<Track> response) {
+                    isLoading.setValue(false);
+                    var t = response.body();
+                    var trackChanged = track.getValue() == null || !track.getValue().equals(t);
+                    track.postValue(t);
+                    if (trackChanged && t != null) {
+                        trackInfo(t.artist(), t.title());
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<Track> call, Throwable t) {
+                    isLoading.setValue(false);
+                    Log.e("RCP", "Error while calling API", t);
+                    error.postValue(t.getMessage());
+                }
+            });
+        } catch (Throwable t) {
+            Log.e("RCP", "Error while calling API", t);
+        }
+    }
+
+    private void trackInfo(String artist, String title) {
+        isLoading.setValue(true);
+        var call = lastFmService.getTrackInfo(artist, title);
         call.enqueue(new Callback<>() {
             @Override
-            public void onResponse(Call<Track> call, Response<Track> response) {
+            public void onResponse(Call<TrackInfoResponse> call, Response<TrackInfoResponse> response) {
+                Log.i("RCP", "Got track info: " + response.body());
                 isLoading.setValue(false);
-                var t = response.body();
-                track.postValue(t);
             }
 
             @Override
-            public void onFailure(Call<Track> call, Throwable t) {
+            public void onFailure(Call<TrackInfoResponse> call, Throwable t) {
                 isLoading.setValue(false);
-                Log.e("RCP", "Error while calling API", t);
+                Log.e("RCP", "Error while calling Last.fm API", t);
                 error.postValue(t.getMessage());
             }
         });

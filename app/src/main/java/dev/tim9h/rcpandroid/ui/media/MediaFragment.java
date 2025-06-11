@@ -120,7 +120,7 @@ public class MediaFragment extends Fragment {
 
         nowPlayingRunnable = () -> {
             if (isAdded() && getView() != null && viewModel != null) {
-                Log.d("RCP", "Updating NC periodically");
+                Log.d("RCP", "Polling current track");
                 viewModel.nowPlaying();
                 handler.postDelayed(nowPlayingRunnable, NP_REFRESH_INTERVAL_MS);
             }
