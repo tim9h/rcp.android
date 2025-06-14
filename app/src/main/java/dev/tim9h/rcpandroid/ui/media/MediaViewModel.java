@@ -29,7 +29,7 @@ public class MediaViewModel extends ViewModel {
 
     private final MutableLiveData<Track> track = new MutableLiveData<>();
 
-    private final MutableLiveData<dev.tim9h.rcpandroid.model.lastfm.Track> trackInfo = new MutableLiveData<>();
+    private final MutableLiveData<TrackInfoResponse> trackInfo = new MutableLiveData<>();
 
     private final MutableLiveData<Intent> openBrowserIntent = new MutableLiveData<>();
 
@@ -49,11 +49,15 @@ public class MediaViewModel extends ViewModel {
         return track;
     }
 
-    public MutableLiveData<Boolean> isLoading() {
+    public LiveData<TrackInfoResponse> getTrackInfo() {
+        return trackInfo;
+    }
+
+    public LiveData<Boolean> isLoading() {
         return isLoading;
     }
 
-    public MutableLiveData<String> getError() {
+    public LiveData<String> getError() {
         return error;
     }
 
@@ -139,7 +143,7 @@ public class MediaViewModel extends ViewModel {
         call.enqueue(new Callback<>() {
             @Override
             public void onResponse(Call<TrackInfoResponse> call, Response<TrackInfoResponse> response) {
-                Log.i("RCP", "Got track info: " + response.body());
+                trackInfo.postValue(response.body());
                 isLoading.setValue(false);
             }
 

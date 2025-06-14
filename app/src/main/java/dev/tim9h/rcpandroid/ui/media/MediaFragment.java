@@ -22,6 +22,8 @@ import androidx.lifecycle.LifecycleEventObserver;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.bumptech.glide.Glide;
+
 import dev.tim9h.rcpandroid.R;
 import dev.tim9h.rcpandroid.databinding.FragmentMediaBinding;
 import dev.tim9h.rcpandroid.model.Track;
@@ -55,6 +57,11 @@ public class MediaFragment extends Fragment {
         var root = binding.getRoot();
 
         viewModel.getTrack().observe(getViewLifecycleOwner(), this::handleTrackChanged);
+
+        viewModel.getTrackInfo().observe(getViewLifecycleOwner(), trackInfo -> {
+            var url = trackInfo.getTrack().getAlbum().getImage().getLast().getText();
+            Glide.with(this).load(url).into(binding.albumArtImageview);
+        });
 
         binding.btnTitle.setOnClickListener(_ -> viewModel.openLastFmTrack());
         binding.btnArtist.setOnClickListener(_ -> viewModel.openLastFmArtist());
