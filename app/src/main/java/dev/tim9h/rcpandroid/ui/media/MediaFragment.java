@@ -135,7 +135,12 @@ public class MediaFragment extends Fragment {
             setDefaultAlbumArt();
             return;
         }
-        var url = trackInfo.getTrack().getAlbum().getImage().getLast().getText();
+        var url = image.getLast().getText();
+        if (url == null || url.isEmpty()) {
+            setDefaultAlbumArt();
+            return;
+        }
+        Log.i("RCP", "Loading album art from URL: " + url);
         Glide.with(this).load(url).into(binding.albumArtImageview);
     }
 
@@ -149,7 +154,6 @@ public class MediaFragment extends Fragment {
 
         nowPlayingRunnable = () -> {
             if (isAdded() && getView() != null && viewModel != null) {
-                Log.d("RCP", "Polling current track");
                 viewModel.nowPlaying();
                 handler.postDelayed(nowPlayingRunnable, NP_REFRESH_INTERVAL_MS);
             }

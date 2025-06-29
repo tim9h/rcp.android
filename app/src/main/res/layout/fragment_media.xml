@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="75dp"
-        android:layout_marginBottom="60dp"
+        android:layout_marginBottom="35dp"
         app:layout_constraintBottom_toTopOf="@id/media_button_bar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -31,23 +31,24 @@
             <LinearLayout
                 android:id="@+id/track_layout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="200dp"
                 android:layout_gravity="bottom"
                 android:gravity="center_horizontal"
                 android:orientation="vertical">
 
                 <ImageView
                     android:id="@+id/album_art_imageview"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_width="320dp"
+                    android:layout_height="320dp"
                     android:layout_margin="24dp"
                     android:layout_marginStart="24dp"
-                    android:scaleType="centerCrop"
+                    android:contentDescription="@string/album_art"
+                    android:scaleType="fitEnd"
                     app:layout_constraintDimensionRatio="1:1"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    tools:srcCompat="@tools:sample/avatars" />
+                    tools:srcCompat="@drawable/defaultalbumcover" />
 
                 <Button
                     android:id="@+id/btn_title"
@@ -57,6 +58,7 @@
                     android:layout_marginLeft="20dp"
                     android:layout_marginRight="20dp"
                     android:enabled="false"
+                    android:singleLine="true"
                     tools:text="Royal Beggars" />
 
                 <Button
@@ -68,6 +70,7 @@
                     android:layout_marginRight="20dp"
                     android:enabled="false"
                     android:paddingVertical="0dp"
+                    android:singleLine="true"
                     tools:text="Architects" />
 
                 <Button
@@ -78,6 +81,7 @@
                     android:layout_marginLeft="20dp"
                     android:layout_marginRight="20dp"
                     android:enabled="false"
+                    android:singleLine="true"
                     tools:text="Holy Hell" />
 
             </LinearLayout>
@@ -90,7 +94,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginEnd="24dp"
-        android:layout_marginBottom="60dp"
+        android:layout_marginBottom="35dp"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
