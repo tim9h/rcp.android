@@ -27,6 +27,7 @@ import com.bumptech.glide.Glide;
 import dev.tim9h.rcpandroid.R;
 import dev.tim9h.rcpandroid.databinding.FragmentMediaBinding;
 import dev.tim9h.rcpandroid.model.Track;
+import dev.tim9h.rcpandroid.model.lastfm.TrackInfoResponse;
 import dev.tim9h.rcpandroid.preferences.PrefsHelper;
 import dev.tim9h.rcpandroid.ui.utils.ColorUtils;
 
@@ -58,10 +59,7 @@ public class MediaFragment extends Fragment {
 
         viewModel.getTrack().observe(getViewLifecycleOwner(), this::handleTrackChanged);
 
-        viewModel.getTrackInfo().observe(getViewLifecycleOwner(), trackInfo -> {
-            var url = trackInfo.getTrack().getAlbum().getImage().getLast().getText();
-            Glide.with(this).load(url).into(binding.albumArtImageview);
-        });
+        viewModel.getTrackInfo().observe(getViewLifecycleOwner(), this::handleTrackChanged);
 
         binding.btnTitle.setOnClickListener(_ -> viewModel.openLastFmTrack());
         binding.btnArtist.setOnClickListener(_ -> viewModel.openLastFmArtist());
@@ -119,6 +117,30 @@ public class MediaFragment extends Fragment {
         });
 
         return root;
+    }
+
+    private void handleTrackChanged(TrackInfoResponse trackInfo) {
+        var track = trackInfo.getTrack();
+        if (track == null) {
+            setDefaultAlbumArt();
+            return;
+        }
+        var album = track.getAlbum();
+        if (album == null) {
+            setDefaultAlbumArt();
+            return;
+        }
+        var image = album.getImage();
+        if (image == null || image.isEmpty()) {
+            setDefaultAlbumArt();
+            return;
+        }
+        var url = trackInfo.getTrack().getAlbum().getImage().getLast().getText();
+        Glide.with(this).load(url).into(binding.albumArtImageview);
+    }
+
+    private void setDefaultAlbumArt() {
+        binding.albumArtImageview.setImageResource(R.drawable.defaultalbumcover);
     }
 
     @Override
