@@ -120,6 +120,9 @@ public class MediaFragment extends Fragment {
     }
 
     private void handleTrackChanged(TrackInfoResponse trackInfo) {
+        if (viewModel.getTrack().getValue() != null && !viewModel.getTrack().getValue().isPlaying()) {
+            return;
+        }
         var track = trackInfo.getTrack();
         if (track == null) {
             setDefaultAlbumArt();
@@ -196,6 +199,8 @@ public class MediaFragment extends Fragment {
             binding.btnTitle.setEnabled(false);
             binding.btnArtist.setEnabled(false);
             binding.btnAlbum.setEnabled(false);
+
+            Glide.with(this).clear(binding.albumArtImageview);
         }
     }
 
