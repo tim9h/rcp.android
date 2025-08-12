@@ -10,44 +10,37 @@
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swiperefresh_track"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="75dp"
-        android:layout_marginBottom="35dp"
+        android:layout_marginBottom="30dp"
         app:layout_constraintBottom_toTopOf="@id/media_button_bar"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <ScrollView
             android:id="@+id/scrollview_track"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toTopOf="@+id/media_button_bar"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            android:layout_height="match_parent"
+            android:fillViewport="true">
 
             <LinearLayout
                 android:id="@+id/track_layout"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:layout_gravity="bottom"
+                android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:paddingBottom="0dp">
 
+                <!-- Your ImageView and Buttons for track info -->
                 <ImageView
                     android:id="@+id/album_art_imageview"
                     android:layout_width="320dp"
                     android:layout_height="320dp"
                     android:layout_margin="24dp"
-                    android:layout_marginStart="24dp"
                     android:contentDescription="@string/album_art"
-                    android:scaleType="fitEnd"
-                    app:layout_constraintDimensionRatio="1:1"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
+                    android:scaleType="fitCenter"
                     tools:srcCompat="@drawable/defaultalbumcover" />
 
                 <Button
@@ -69,7 +62,6 @@
                     android:layout_marginLeft="20dp"
                     android:layout_marginRight="20dp"
                     android:enabled="false"
-                    android:paddingVertical="0dp"
                     android:singleLine="true"
                     tools:text="Architects" />
 
@@ -90,32 +82,25 @@
 
     <LinearLayout
         android:id="@+id/media_button_bar"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginEnd="24dp"
-        android:layout_marginBottom="35dp"
+        android:layout_marginBottom="30dp"
+        android:gravity="center"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.47"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:ignore="MissingConstraints">
+        app:layout_constraintStart_toStartOf="parent">
 
         <Button
             android:id="@+id/btn_previous"
             style="@style/Widget.Material3.Button.IconButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:contentDescription="@string/previous"
-            android:scaleX="1"
-            android:scaleY="1"
             app:icon="@drawable/previous"
-            app:iconSize="50dp"
-            tools:ignore="MissingConstraints"
-            tools:layout_editor_absoluteX="134dp"
-            tools:layout_editor_absoluteY="529dp" />
+            app:iconSize="50dp" />
 
         <Button
             android:id="@+id/btn_playpause"
@@ -123,30 +108,18 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="40dp"
-            android:layout_weight="1"
             android:contentDescription="@string/play_pause"
-            android:scaleX="1"
-            android:scaleY="1"
             app:icon="@drawable/playpause"
-            app:iconSize="50dp"
-            tools:ignore="MissingConstraints"
-            tools:layout_editor_absoluteX="182dp"
-            tools:layout_editor_absoluteY="529dp" />
+            app:iconSize="50dp" />
 
         <Button
             android:id="@+id/btn_next"
             style="@style/Widget.Material3.Button.IconButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
             android:contentDescription="@string/next"
-            android:scaleX="1"
-            android:scaleY="1"
             app:icon="@drawable/next"
-            app:iconSize="50dp"
-            tools:ignore="MissingConstraints"
-            tools:layout_editor_absoluteX="230dp"
-            tools:layout_editor_absoluteY="529dp" />
+            app:iconSize="50dp" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
