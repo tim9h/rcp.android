@@ -51,13 +51,14 @@ public class MainActivity extends AppCompatActivity {
         disableMenu(binding, R.id.navigation_system);
         disableMenu(binding, R.id.navigation_lighting);
 
-        // fix AppBar hiding content
-        var navHost = findViewById(R.id.nav_host_fragment_activity_main);
-        ViewCompat.setOnApplyWindowInsetsListener(navHost, (view, windowInsets) -> {
-            var insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars());
-            var navViewHeight = binding.navView.getHeight();
-            view.setPadding(0, insets.top, 0, insets.bottom + navViewHeight);
-            return WindowInsetsCompat.CONSUMED;
+        fixEdgeToEdgeView();
+    }
+
+    private void fixEdgeToEdgeView() {
+        ViewCompat.setOnApplyWindowInsetsListener(binding.getRoot(), (_, insets) -> {
+            var systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            binding.navHostFragmentActivityMain.setPadding(0, systemBars.top, 0, systemBars.bottom);
+            return insets;
         });
     }
 
