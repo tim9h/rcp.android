@@ -64,6 +64,17 @@ public class MediaFragment extends Fragment {
 
         viewModel.getTrackInfo().observe(getViewLifecycleOwner(), this::handleTrackChanged);
 
+        viewModel.isLoading().observe(getViewLifecycleOwner(), isLoading -> {
+            if (isLoading) {
+                binding.btnTitle.setText("...");
+                binding.btnArtist.setText("...");
+                binding.btnAlbum.setText("...");
+                binding.btnTitle.setEnabled(false);
+                binding.btnArtist.setEnabled(false);
+                binding.btnAlbum.setEnabled(false);
+            }
+        });
+
         binding.btnTitle.setOnClickListener(_ -> viewModel.openLastFmTrack());
         binding.btnArtist.setOnClickListener(_ -> viewModel.openLastFmArtist());
         binding.btnAlbum.setOnClickListener(_ -> viewModel.openLastFmAlbum());
@@ -158,7 +169,9 @@ public class MediaFragment extends Fragment {
     }
 
     private void setDefaultAlbumArt() {
-        binding.albumArtImageview.setImageResource(R.drawable.defaultalbumcover);
+        Glide.with(this)
+                .load(R.drawable.defaultalbumcover)
+                .into(binding.albumArtImageview);
     }
 
     @Override
