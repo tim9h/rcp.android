@@ -23,6 +23,7 @@ import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 
 import dev.tim9h.rcpandroid.R;
 import dev.tim9h.rcpandroid.databinding.FragmentMediaBinding;
@@ -42,6 +43,8 @@ public class MediaFragment extends Fragment {
     private final Handler handler = new Handler(Looper.getMainLooper());
 
     private static final long NP_REFRESH_INTERVAL_MS = 5000;
+
+    private static final int ANIMATION_DURATION = 500;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         viewModel = new ViewModelProvider(this, new ViewModelProvider.Factory() {
@@ -143,8 +146,15 @@ public class MediaFragment extends Fragment {
             setDefaultAlbumArt();
             return;
         }
+        replaceAlbumCover(url);
+    }
+
+    private void replaceAlbumCover(String url) {
         Log.i("RCP", "Loading album art from URL: " + url);
-        Glide.with(this).load(url).into(binding.albumArtImageview);
+        Glide.with(this)
+                .load(url)
+                .transition(DrawableTransitionOptions.withCrossFade(ANIMATION_DURATION))
+                .into(binding.albumArtImageview);
     }
 
     private void setDefaultAlbumArt() {
@@ -200,7 +210,14 @@ public class MediaFragment extends Fragment {
             binding.btnArtist.setEnabled(false);
             binding.btnAlbum.setEnabled(false);
 
-            Glide.with(this).clear(binding.albumArtImageview);
+            binding.albumArtImageview.animate()
+                    .alpha(0f)
+                    .setDuration(ANIMATION_DURATION)
+                    .withEndAction(() -> {
+                        Glide.with(this).clear(binding.albumArtImageview);
+                        binding.albumArtImageview.setAlpha(1f);
+                    }).start();
+
         }
     }
 
