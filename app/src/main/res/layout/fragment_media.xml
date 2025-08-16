@@ -34,14 +34,15 @@
                 android:paddingBottom="0dp">
 
                 <!-- Your ImageView and Buttons for track info -->
-                <ImageView
+                <com.google.android.material.imageview.ShapeableImageView
                     android:id="@+id/album_art_imageview"
                     android:layout_width="320dp"
                     android:layout_height="320dp"
                     android:layout_margin="24dp"
                     android:contentDescription="@string/album_art"
                     android:scaleType="fitCenter"
-                    tools:srcCompat="@drawable/defaultalbumcover" />
+                    tools:srcCompat="@drawable/defaultalbumcover"
+                    app:shapeAppearanceOverlay="@style/RoundedImageView" />
 
                 <Button
                     android:id="@+id/btn_title"
