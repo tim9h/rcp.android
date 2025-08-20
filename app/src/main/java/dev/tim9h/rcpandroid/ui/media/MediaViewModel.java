@@ -109,6 +109,21 @@ public class MediaViewModel extends ViewModel {
         call.enqueue(createCallback());
     }
 
+    public void mute() {
+        var call = rcpService.mute();
+        call.enqueue(createCallback());
+    }
+
+    public void volumeUp() {
+        var call = rcpService.volumeUp();
+        call.enqueue(createCallback());
+    }
+
+    public void volumeDown() {
+        var call = rcpService.volumeDown();
+        call.enqueue(createCallback());
+    }
+
     public void nowPlaying() {
         isLoading.setValue(true);
         try {

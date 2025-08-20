@@ -79,9 +79,15 @@ public class MediaFragment extends Fragment {
         binding.btnArtist.setOnClickListener(_ -> viewModel.openLastFmArtist());
         binding.btnAlbum.setOnClickListener(_ -> viewModel.openLastFmAlbum());
 
+        binding.btnStop.setOnClickListener(_ -> viewModel.stop());
+        binding.btnMute.setOnClickListener(_ -> viewModel.mute());
+
         binding.btnPlaypause.setOnClickListener(_ -> viewModel.play());
         binding.btnNext.setOnClickListener(_ -> viewModel.next());
         binding.btnPrevious.setOnClickListener(_ -> viewModel.previous());
+
+        binding.btnVolup.setOnClickListener(_ -> viewModel.volumeUp());
+        binding.btnVoldown.setOnClickListener(_ -> viewModel.volumeDown());
 
         viewModel.getError().observe(getViewLifecycleOwner(), error -> {
             Log.e("RCP", error);
@@ -170,7 +176,7 @@ public class MediaFragment extends Fragment {
 
     private void setDefaultAlbumArt() {
         Glide.with(this)
-                .load(R.drawable.defaultalbumcover)
+                .load(R.drawable.default_album_cover)
                 .into(binding.albumArtImageview);
     }
 
