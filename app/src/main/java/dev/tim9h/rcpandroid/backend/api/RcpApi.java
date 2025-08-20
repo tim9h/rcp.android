@@ -20,6 +20,15 @@ public interface RcpApi {
     @POST("stop")
     Call<Void> stop();
 
+    @POST("mute")
+    Call<Void> mute();
+
+    @POST("volumeup")
+    Call<Void> volumeUp();
+
+    @POST("volumedown")
+    Call<Void> volumeDown();
+
     @POST("lock")
     Call<Void> lock();
 

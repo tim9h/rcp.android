@@ -28,6 +28,18 @@ public class RcpService {
         return client.getApi().stop();
     }
 
+    public Call<Void> mute() {
+        return client.getApi().mute();
+    }
+
+    public Call<Void> volumeUp() {
+        return client.getApi().volumeUp();
+    }
+
+    public Call<Void> volumeDown() {
+        return client.getApi().volumeDown();
+    }
+
     public Call<Track> nowPlaying() {
         return client.getApi().nowPlaying();
     }
