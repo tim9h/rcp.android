@@ -11,7 +11,7 @@ public class LastFmClient {
 
     private LastFmApi api;
 
-    private static final String BASE_URL = "http://ws.audioscrobbler.com/";
+    private static final String BASE_URL = "https://ws.audioscrobbler.com/";
 
     public LastFmApi getApi() {
         if (api == null) {
