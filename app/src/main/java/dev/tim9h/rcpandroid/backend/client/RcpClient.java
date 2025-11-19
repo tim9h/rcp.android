@@ -8,7 +8,6 @@ import androidx.preference.PreferenceManager;
 import dev.tim9h.rcpandroid.App;
 import dev.tim9h.rcpandroid.backend.api.RcpApi;
 import okhttp3.Authenticator;
-import okhttp3.Credentials;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
@@ -41,14 +40,10 @@ public class RcpClient {
 
     private void applyChangedPreferences() {
         baseUrl = preferences.getString("rest_base_url", "");
-        var username = preferences.getString("rest_api_username", "");
-        var password = preferences.getString("rest_api_password", "");
-        auth = (_, response) -> {
-            String credential = Credentials.basic(username, password);
-            return response.request().newBuilder().header("Authorization", credential).build();
-        };
+        var apiKey = preferences.getString("rest_api_key", "");
+        auth = (_, response) -> response.request().newBuilder().header("X-API-Key", apiKey).build();
         api = null;
-        Log.d("RCP", "init: baseUrl: " + baseUrl + " username: " + username + " password: ******");
+        Log.d("RCP", "init: baseUrl: " + baseUrl);
     }
 
     public RcpApi getApi() {

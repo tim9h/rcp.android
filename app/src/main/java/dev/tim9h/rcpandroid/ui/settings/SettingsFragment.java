@@ -40,9 +40,8 @@ public class SettingsFragment extends PreferenceFragmentCompat {
     public void onCreatePreferences(@Nullable Bundle savedInstanceState, @Nullable String rootKey) {
         setPreferencesFromResource(R.xml.settings, rootKey);
 
-        decorateSetting("rest_api_username", false);
-        decorateSetting("rest_api_password", true);
         decorateSetting("rest_base_url", false);
+        decorateSetting("rest_api_key", true);
         decorateSetting("lastfm_username", false);
         decorateSetting("lastfm_apikey", true);
     }
@@ -56,8 +55,8 @@ public class SettingsFragment extends PreferenceFragmentCompat {
             } else {
                 preference.setOnBindEditTextListener(editText -> editText.setInputType(InputType.TYPE_TEXT_VARIATION_URI));
                 preference.setSummary(getStoredValue(preferenceKey));
-                preference.setOnPreferenceChangeListener((pref, value) -> {
-                    pref.setSummary(value.toString());
+                preference.setOnPreferenceChangeListener((pref, val) -> {
+                    pref.setSummary(val.toString());
                     return true;
                 });
             }

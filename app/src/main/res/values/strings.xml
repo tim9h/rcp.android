@@ -15,7 +15,6 @@
     <string name="category_general">General</string>
     <string name="category_rest">REST</string>
     <string name="user">Username</string>
-    <string name="password">Password</string>
     <string name="base_url">Base URL</string>
     <string name="not_playing">Not playing</string>
     <string name="category_lastfm">Last.fm</string>

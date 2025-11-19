@@ -3,20 +3,15 @@
 
     <PreferenceCategory android:title="@string/category_rest">
         <EditTextPreference
-            android:key="rest_api_username"
-            android:selectAllOnFocus="true"
-            android:singleLine="true"
-            android:title="@string/user" />
-        <EditTextPreference
-            android:key="rest_api_password"
-            android:selectAllOnFocus="true"
-            android:singleLine="true"
-            android:title="@string/password" />
-        <EditTextPreference
             android:key="rest_base_url"
             android:selectAllOnFocus="true"
             android:singleLine="true"
             android:title="@string/base_url" />
+        <EditTextPreference
+            android:key="rest_api_key"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:title="@string/api_key" />
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/category_lastfm">
