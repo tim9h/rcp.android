@@ -4,12 +4,12 @@ plugins {
 
 android {
     namespace = "dev.tim9h.rcpandroid"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "dev.tim9h.rcpandroid"
         minSdk = 35
-        targetSdk = 35
+        targetSdk = 36
         versionCode = 1
         versionName = "1.0"
 

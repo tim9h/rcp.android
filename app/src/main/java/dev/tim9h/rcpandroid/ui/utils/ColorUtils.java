@@ -9,6 +9,7 @@ import androidx.core.content.ContextCompat;
 import dev.tim9h.rcpandroid.R;
 
 public class ColorUtils {
+
     private ColorUtils() {
         // Utility class
     }
@@ -24,7 +25,7 @@ public class ColorUtils {
     }
 
     public static int getPrimary(Context ctx) {
-        return getDynamicColor(ctx, com.google.android.material.R.attr.colorPrimary);
+        return getDynamicColor(ctx, com.google.android.material.R.attr.colorPrimaryFixed);
     }
 
     public static int getSurfaceVariant(Context ctx) {
