@@ -212,15 +212,7 @@ public class MediaFragment extends Fragment {
     }
 
     private void handleTrackChanged(Track track) {
-        if (track.isPlaying()) {
-            binding.btnTitle.setText(track.title());
-            binding.btnArtist.setText(track.artist());
-            binding.btnAlbum.setText(track.album());
-
-            binding.btnTitle.setEnabled(true);
-            binding.btnArtist.setEnabled(true);
-            binding.btnAlbum.setEnabled(true);
-        } else {
+        if (track == null || !track.isPlaying()) {
             binding.btnTitle.setText(R.string.not_playing);
             binding.btnArtist.setText("");
             binding.btnAlbum.setText("");
@@ -237,6 +229,14 @@ public class MediaFragment extends Fragment {
                         binding.albumArtImageview.setAlpha(1f);
                     }).start();
 
+        } else {
+            binding.btnTitle.setText(track.title());
+            binding.btnArtist.setText(track.artist());
+            binding.btnAlbum.setText(track.album());
+
+            binding.btnTitle.setEnabled(true);
+            binding.btnArtist.setEnabled(true);
+            binding.btnAlbum.setEnabled(true);
         }
     }
 
