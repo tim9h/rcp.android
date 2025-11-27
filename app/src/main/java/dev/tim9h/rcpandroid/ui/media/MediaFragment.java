@@ -113,29 +113,6 @@ public class MediaFragment extends Fragment {
             }
         });
 
-        requireActivity().addMenuProvider(new MenuProvider() {
-            @Override
-            public void onCreateMenu(@org.jspecify.annotations.NonNull Menu menu, @org.jspecify.annotations.NonNull MenuInflater menuInflater) {
-                menuInflater.inflate(R.menu.media_menu, menu);
-                var icon = menu.findItem(R.id.action_lastfm_profile_icon_button).getIcon();
-                if (icon != null) {
-                    var drawable = DrawableCompat.wrap(icon).mutate();
-                    DrawableCompat.setTint(drawable, ColorUtils.getColorOnSurface(requireContext()));
-                }
-
-            }
-
-            @Override
-            public boolean onMenuItemSelected(@org.jspecify.annotations.NonNull MenuItem menuItem) {
-                var id = menuItem.getItemId();
-                if (id == R.id.action_lastfm_profile_icon_button) {
-                    viewModel.openLastFmProfile();
-                    return true;
-                }
-                return false;
-            }
-        });
-
         return root;
     }
 
@@ -183,6 +160,29 @@ public class MediaFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        requireActivity().addMenuProvider(new MenuProvider() {
+            @Override
+            public void onCreateMenu(@NonNull Menu menu, @NonNull MenuInflater menuInflater) {
+                menuInflater.inflate(R.menu.media_menu, menu);
+                var icon = menu.findItem(R.id.action_lastfm_profile_icon_button).getIcon();
+                if (icon != null) {
+                    var drawable = DrawableCompat.wrap(icon).mutate();
+                    DrawableCompat.setTint(drawable, ColorUtils.getColorOnSurface(requireContext()));
+                }
+
+            }
+
+            @Override
+            public boolean onMenuItemSelected(@NonNull MenuItem menuItem) {
+                var id = menuItem.getItemId();
+                if (id == R.id.action_lastfm_profile_icon_button) {
+                    viewModel.openLastFmProfile();
+                    return true;
+                }
+                return false;
+            }
+        }, getViewLifecycleOwner(), Lifecycle.State.RESUMED);
 
         nowPlayingRunnable = () -> {
             if (isAdded() && getView() != null && viewModel != null) {
