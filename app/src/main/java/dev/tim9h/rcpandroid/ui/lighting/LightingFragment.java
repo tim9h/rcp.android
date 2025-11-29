@@ -31,7 +31,7 @@ public class LightingFragment extends Fragment {
         });
 
         viewModel.initButtonState();
-        viewModel.getLogiledEnabled().observe(getViewLifecycleOwner(), enabled -> binding.toggleButton.setChecked(enabled));
+        viewModel.getLogiledStatus().observe(getViewLifecycleOwner(), status -> binding.toggleButton.setChecked(status.enabled()));
 
         return root;
     }

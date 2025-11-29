@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import dev.tim9h.rcpandroid.backend.service.RcpService;
+import dev.tim9h.rcpandroid.model.LogiledStatus;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -19,7 +20,7 @@ public class LightingViewModel extends ViewModel {
 
     private final MutableLiveData<String> error = new MutableLiveData<>();
 
-    private final MutableLiveData<Boolean> logiledEnabled = new MutableLiveData<>();
+    private final MutableLiveData<LogiledStatus> logiledStatus = new MutableLiveData<>();
 
     public LightingViewModel() {
         this.rcpService = new RcpService();
@@ -39,12 +40,12 @@ public class LightingViewModel extends ViewModel {
     public void initButtonState() {
         isLoading.setValue(true);
         var call = rcpService.logiledStatus();
-        call.enqueue(new Callback<Boolean>() {
+        call.enqueue(new Callback<>() {
             @Override
-            public void onResponse(Call<Boolean> call, Response<Boolean> response) {
+            public void onResponse(Call<LogiledStatus> call, Response<LogiledStatus> response) {
                 isLoading.setValue(false);
                 if (response.isSuccessful()) {
-                    logiledEnabled.postValue(response.body());
+                    logiledStatus.postValue(response.body());
                 } else {
                     Log.e("RCP", "API call for status unsuccessful");
                     error.postValue("Error fetching button state");
@@ -52,7 +53,7 @@ public class LightingViewModel extends ViewModel {
             }
 
             @Override
-            public void onFailure(Call<Boolean> call, Throwable t) {
+            public void onFailure(Call<LogiledStatus> call, Throwable t) {
                 isLoading.setValue(false);
                 Log.e("RCP", "Error while calling API", t);
                 error.postValue(t.getMessage());
@@ -80,8 +81,8 @@ public class LightingViewModel extends ViewModel {
         return error;
     }
 
-    public LiveData<Boolean> getLogiledEnabled() {
-        return logiledEnabled;
+    public LiveData<LogiledStatus> getLogiledStatus() {
+        return logiledStatus;
     }
 
 }

@@ -1,5 +1,6 @@
 package dev.tim9h.rcpandroid.backend.api;
 
+import dev.tim9h.rcpandroid.model.LogiledStatus;
 import dev.tim9h.rcpandroid.model.Track;
 import retrofit2.Call;
 import retrofit2.http.Field;
@@ -45,9 +46,6 @@ public interface RcpApi {
     Call<Void> logiled(@Query("color") String color);
 
     @GET("logiled")
-    Call<Boolean> logiledStatus();
-
-    @GET("logiledcolor")
-    Call<String> logiledColor();
+    Call<LogiledStatus> logiledStatus();
 
 }

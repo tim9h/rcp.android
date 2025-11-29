@@ -1,6 +1,7 @@
 package dev.tim9h.rcpandroid.backend.service;
 
 import dev.tim9h.rcpandroid.backend.client.RcpClient;
+import dev.tim9h.rcpandroid.model.LogiledStatus;
 import dev.tim9h.rcpandroid.model.Track;
 import retrofit2.Call;
 
@@ -52,16 +53,12 @@ public class RcpService {
         return client.getApi().logiled("off");
     }
 
-    public Call<Boolean> logiledStatus() {
+    public Call<LogiledStatus> logiledStatus() {
         return client.getApi().logiledStatus();
     }
 
     public Call<Void> logiled(String color) {
         return client.getApi().logiled(color);
-    }
-
-    public Call<String> logiledColor() {
-        return client.getApi().logiledColor();
     }
 
 }
