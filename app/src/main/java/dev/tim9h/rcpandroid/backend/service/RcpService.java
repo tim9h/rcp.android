@@ -44,4 +44,24 @@ public class RcpService {
         return client.getApi().nowPlaying();
     }
 
+    public Call<Void> logiledOn() {
+        return client.getApi().logiled("on");
+    }
+
+    public Call<Void> logiledOff() {
+        return client.getApi().logiled("off");
+    }
+
+    public Call<Boolean> logiledStatus() {
+        return client.getApi().logiledStatus();
+    }
+
+    public Call<Void> logiled(String color) {
+        return client.getApi().logiled(color);
+    }
+
+    public Call<String> logiledColor() {
+        return client.getApi().logiledColor();
+    }
+
 }
