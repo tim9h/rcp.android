@@ -1,9 +1,11 @@
 package dev.tim9h.rcpandroid.ui.lighting;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -21,8 +23,16 @@ public class LightingFragment extends Fragment {
         binding = FragmentLightingBinding.inflate(inflater, container, false);
         var root = binding.getRoot();
 
-        final var textView = binding.textNotifications;
-        viewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
+        binding.toggleButton.addOnCheckedChangeListener((_, checked) -> viewModel.toggleLed(checked));
+
+        viewModel.getError().observe(getViewLifecycleOwner(), error -> {
+            Log.e("RCP", error);
+            Toast.makeText(getContext(), error, Toast.LENGTH_SHORT).show();
+        });
+
+        viewModel.initButtonState();
+        viewModel.getLogiledEnabled().observe(getViewLifecycleOwner(), enabled -> binding.toggleButton.setChecked(enabled));
+
         return root;
     }
 

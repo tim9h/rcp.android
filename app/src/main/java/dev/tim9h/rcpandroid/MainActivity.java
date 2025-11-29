@@ -49,7 +49,6 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(binding.navView, navController);
 
         disableMenu(binding, R.id.navigation_system);
-        disableMenu(binding, R.id.navigation_lighting);
 
         fixEdgeToEdgeView();
     }
