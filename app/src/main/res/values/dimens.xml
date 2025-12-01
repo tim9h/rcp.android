@@ -3,6 +3,7 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="rounded_corners">28dp</dimen>
+    <dimen name="rounded_corners_menu">14dp</dimen>
     <dimen name="menu_padding">14dp</dimen>
     <dimen name="popupmenu_offset">-10dp</dimen>
 </resources>

@@ -6,9 +6,9 @@
         android:top="@dimen/menu_padding" />
 
     <corners
-        android:bottomLeftRadius="@dimen/rounded_corners"
-        android:bottomRightRadius="@dimen/rounded_corners"
-        android:topLeftRadius="@dimen/rounded_corners"
-        android:topRightRadius="@dimen/rounded_corners" />
+        android:bottomLeftRadius="@dimen/rounded_corners_menu"
+        android:bottomRightRadius="@dimen/rounded_corners_menu"
+        android:topLeftRadius="@dimen/rounded_corners_menu"
+        android:topRightRadius="@dimen/rounded_corners_menu" />
 
 </shape>
