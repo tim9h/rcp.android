@@ -159,10 +159,6 @@ public class ColorPickerView extends View {
         notifyColorChanged();
     }
 
-    public float getBrightness() {
-        return hsv[2];
-    }
-
     public void setOnColorChangedListener(OnColorChangedListener listener) {
         this.onColorChangedListener = listener;
     }
