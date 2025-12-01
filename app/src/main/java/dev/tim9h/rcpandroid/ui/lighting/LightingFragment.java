@@ -1,5 +1,6 @@
 package dev.tim9h.rcpandroid.ui.lighting;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -31,9 +32,30 @@ public class LightingFragment extends Fragment {
         });
 
         viewModel.initButtonState();
-        viewModel.getLogiledStatus().observe(getViewLifecycleOwner(), status -> binding.toggleButton.setChecked(status.enabled()));
+        viewModel.getLogiledStatus().observe(getViewLifecycleOwner(), status -> {
+            binding.toggleButton.setChecked(status.enabled());
+            binding.colorPickerView.setColor(status.color());
+            binding.brightnessSlider.setValue(getBrightnessFromHexColor(status.color()));
+        });
+
+        binding.colorPickerView.setOnColorChangedListener(color -> {
+            var hex = String.format("#%06X", (0xFFFFFF & color));
+            if (binding.toggleButton.isChecked()) {
+                viewModel.updateLedColor(hex);
+//              binding.toggleButton.setBackgroundColor(color);
+            }
+        });
+
+        binding.brightnessSlider.addOnChangeListener((_, brightness, _) -> binding.colorPickerView.setBrightness(brightness));
 
         return root;
+    }
+
+    private static float getBrightnessFromHexColor(String hexColor) {
+        var color = Color.parseColor(hexColor);
+        var hsl = new float[3];
+        Color.colorToHSV(color, hsl);
+        return hsl[2];
     }
 
     @Override

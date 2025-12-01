@@ -47,6 +47,9 @@ public class RcpClient {
     }
 
     public RcpApi getApi() {
+        if (baseUrl == null) {
+            return null;
+        }
         if (api == null) {
             var loggingInterceptor = new HttpLoggingInterceptor();
             loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
