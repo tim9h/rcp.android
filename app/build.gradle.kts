@@ -57,6 +57,7 @@ dependencies {
     implementation(libs.preference.ktx)
     implementation(libs.swiperefreshlayout)
     implementation(libs.glide)
+    implementation(libs.core.animation)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)

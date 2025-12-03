@@ -1,11 +1,14 @@
 package dev.tim9h.rcpandroid.ui.lighting;
 
+import android.animation.ObjectAnimator;
+import android.animation.PropertyValuesHolder;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.OvershootInterpolator;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -27,7 +30,8 @@ public class LightingFragment extends Fragment {
         binding = FragmentLightingBinding.inflate(inflater, container, false);
         var root = binding.getRoot();
 
-        binding.toggleButton.addOnCheckedChangeListener((_, checked) -> {
+        binding.toggleButton.addOnCheckedChangeListener((button, checked) -> {
+            animateToggleButton(button, checked);
             viewModel.toggleLed(checked);
             if (!checked) {
                 binding.toggleButton.setBackgroundColor(Color.TRANSPARENT);
@@ -58,8 +62,33 @@ public class LightingFragment extends Fragment {
             }
         });
 
-
         return root;
+    }
+
+    private void animateToggleButton(View button, boolean isChecked) {
+        var scale = isChecked ? 1.1f : 0.9f;
+        var scaleX = PropertyValuesHolder.ofFloat(View.SCALE_X, scale);
+        var scaleY = PropertyValuesHolder.ofFloat(View.SCALE_Y, scale);
+
+        var animator = ObjectAnimator.ofPropertyValuesHolder(button, scaleX, scaleY);
+        animator.setDuration(250); // Animation duration in milliseconds
+        animator.setInterpolator(new OvershootInterpolator()); // Gives a slight "overshoot" effect
+
+        // Animate back to the original size
+        var reverseAnimator = ObjectAnimator.ofPropertyValuesHolder(button,
+                PropertyValuesHolder.ofFloat(View.SCALE_X, 1.0f),
+                PropertyValuesHolder.ofFloat(View.SCALE_Y, 1.0f)
+        );
+        reverseAnimator.setDuration(250);
+        reverseAnimator.setInterpolator(new OvershootInterpolator());
+
+        animator.addListener(new android.animation.AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(android.animation.Animator animation) {
+                reverseAnimator.start();
+            }
+        });
+        animator.start();
     }
 
     private static float getBrightnessFromHexColor(String hexColor) {
