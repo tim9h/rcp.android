@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.core.graphics.ColorUtils;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -57,11 +56,11 @@ public class LightingFragment extends Fragment {
 
     private static float getBrightnessFromHexColor(String hexColor) {
         var color = Color.parseColor(hexColor);
-        var hsl = new float[3];
-        ColorUtils.colorToHSL(color, hsl);
+        var hsv = new float[3];
+        Color.colorToHSV(color, hsv);
         var df = new DecimalFormat("#.##");
         df.setRoundingMode(RoundingMode.HALF_UP);
-        return Float.parseFloat(df.format(hsl[2]));
+        return Float.parseFloat(df.format(hsv[2]));
     }
 
     @Override
