@@ -225,8 +225,10 @@ public class MediaFragment extends Fragment {
                     .alpha(0f)
                     .setDuration(ANIMATION_DURATION)
                     .withEndAction(() -> {
-                        Glide.with(this).clear(binding.albumArtImageview);
-                        binding.albumArtImageview.setAlpha(1f);
+                        if (binding != null) {
+                            Glide.with(this).clear(binding.albumArtImageview);
+                            binding.albumArtImageview.setAlpha(1f);
+                        }
                     }).start();
 
         } else {
