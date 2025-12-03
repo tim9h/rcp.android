@@ -27,7 +27,14 @@ public class LightingFragment extends Fragment {
         binding = FragmentLightingBinding.inflate(inflater, container, false);
         var root = binding.getRoot();
 
-        binding.toggleButton.addOnCheckedChangeListener((_, checked) -> viewModel.toggleLed(checked));
+        binding.toggleButton.addOnCheckedChangeListener((_, checked) -> {
+            viewModel.toggleLed(checked);
+            if (!checked) {
+                binding.toggleButton.setBackgroundColor(Color.TRANSPARENT);
+            } else {
+                binding.toggleButton.setBackgroundColor(binding.colorPickerView.getCurrentColor());
+            }
+        });
 
         viewModel.getError().observe(getViewLifecycleOwner(), error -> {
             Log.e("RCP", error);
@@ -41,15 +48,16 @@ public class LightingFragment extends Fragment {
             binding.brightnessSlider.setValue(getBrightnessFromHexColor(status.color()));
         });
 
+        binding.brightnessSlider.addOnChangeListener((_, brightness, _) -> binding.colorPickerView.setBrightness(brightness));
+
         binding.colorPickerView.setOnColorChangedListener(color -> {
             var hex = String.format("#%06X", (0xFFFFFF & color));
             if (binding.toggleButton.isChecked()) {
                 viewModel.updateLedColor(hex);
-//              binding.toggleButton.setBackgroundColor(color);
+                binding.toggleButton.setBackgroundColor(color);
             }
         });
 
-        binding.brightnessSlider.addOnChangeListener((_, brightness, _) -> binding.colorPickerView.setBrightness(brightness));
 
         return root;
     }

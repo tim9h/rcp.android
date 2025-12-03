@@ -195,4 +195,8 @@ public class ColorPickerView extends View {
         selectorY = centerY - (float) (distance * Math.sin(angle));
     }
 
+    public int getCurrentColor() {
+        return Color.HSVToColor(hsv);
+    }
+
 }
