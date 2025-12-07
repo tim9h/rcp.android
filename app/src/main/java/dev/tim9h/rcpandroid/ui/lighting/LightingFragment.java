@@ -15,6 +15,8 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.google.android.material.button.MaterialButton;
+
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 
@@ -31,7 +33,6 @@ public class LightingFragment extends Fragment {
         var root = binding.getRoot();
 
         binding.toggleButton.addOnCheckedChangeListener((button, checked) -> {
-            animateToggleButton(button, checked);
             viewModel.toggleLed(checked);
             if (!checked) {
                 binding.toggleButton.setBackgroundColor(Color.TRANSPARENT);
@@ -39,6 +40,7 @@ public class LightingFragment extends Fragment {
                 binding.toggleButton.setBackgroundColor(binding.colorPickerView.getCurrentColor());
             }
         });
+        binding.toggleButton.setOnClickListener(_ -> animateToggleButton(binding.toggleButton));
 
         viewModel.getError().observe(getViewLifecycleOwner(), error -> {
             Log.e("RCP", error);
@@ -65,8 +67,8 @@ public class LightingFragment extends Fragment {
         return root;
     }
 
-    private void animateToggleButton(View button, boolean isChecked) {
-        var scale = isChecked ? 1.1f : 0.9f;
+    private void animateToggleButton(MaterialButton button) {
+        var scale = button.isChecked() ? 1.1f : 0.9f;
         var scaleX = PropertyValuesHolder.ofFloat(View.SCALE_X, scale);
         var scaleY = PropertyValuesHolder.ofFloat(View.SCALE_Y, scale);
 
