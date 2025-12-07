@@ -12,6 +12,7 @@ import android.view.animation.OvershootInterpolator;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.graphics.ColorUtils;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -20,6 +21,7 @@ import com.google.android.material.button.MaterialButton;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 
+import dev.tim9h.rcpandroid.R;
 import dev.tim9h.rcpandroid.databinding.FragmentLightingBinding;
 
 public class LightingFragment extends Fragment {
@@ -36,11 +38,15 @@ public class LightingFragment extends Fragment {
             viewModel.toggleLed(checked);
             if (!checked) {
                 binding.toggleButton.setBackgroundColor(Color.TRANSPARENT);
+                binding.toggleButton.setIconTintResource(R.color.white);
             } else {
                 binding.toggleButton.setBackgroundColor(binding.colorPickerView.getCurrentColor());
+                binding.toggleButton.setIconTintResource(isColorDark(binding.colorPickerView.getCurrentColor()) ? R.color.white : R.color.black);
             }
         });
-        binding.toggleButton.setOnClickListener(_ -> animateToggleButton(binding.toggleButton));
+        binding.toggleButton.setOnClickListener(_ -> {
+            animateToggleButton(binding.toggleButton);
+        });
 
         viewModel.getError().observe(getViewLifecycleOwner(), error -> {
             Log.e("RCP", error);
@@ -61,11 +67,17 @@ public class LightingFragment extends Fragment {
             if (binding.toggleButton.isChecked()) {
                 viewModel.updateLedColor(hex);
                 binding.toggleButton.setBackgroundColor(color);
+                binding.toggleButton.setIconTintResource(isColorDark(color) ? android.R.color.white : android.R.color.black);
             }
         });
 
         return root;
     }
+
+    private static boolean isColorDark(int color) {
+        return ColorUtils.calculateLuminance(color) < 0.3;
+    }
+
 
     private void animateToggleButton(MaterialButton button) {
         var scale = button.isChecked() ? 1.1f : 0.9f;
