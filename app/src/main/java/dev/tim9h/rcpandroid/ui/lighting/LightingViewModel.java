@@ -33,13 +33,13 @@ public class LightingViewModel extends ViewModel {
 
     public void toggleLed(boolean on) {
         isLoading.setValue(true);
+        Call<Void> call;
         if (on) {
-            var call = rcpService.logiledOn();
-            call.enqueue(createCallback());
+            call = rcpService.logiledOn();
         } else {
-            var call = rcpService.logiledOff();
-            call.enqueue(createCallback());
+            call = rcpService.logiledOff();
         }
+        call.enqueue(createCallback());
     }
 
     public void updateLedColor(String color) {

@@ -36,7 +36,7 @@ public class LightingFragment extends Fragment {
         binding = FragmentLightingBinding.inflate(inflater, container, false);
         var root = binding.getRoot();
 
-        binding.toggleButton.addOnCheckedChangeListener((button, checked) -> {
+        binding.toggleButton.addOnCheckedChangeListener((_, checked) -> {
             viewModel.toggleLed(checked);
             if (!checked) {
                 binding.toggleButton.setBackgroundColor(Color.TRANSPARENT);
@@ -46,9 +46,7 @@ public class LightingFragment extends Fragment {
                 binding.toggleButton.setIconTintResource(isColorDark(binding.colorPickerView.getCurrentColor()) ? R.color.white : R.color.black);
             }
         });
-        binding.toggleButton.setOnClickListener(_ -> {
-            animateToggleButton(binding.toggleButton);
-        });
+        binding.toggleButton.setOnClickListener(_ -> animateToggleButton(binding.toggleButton));
 
         viewModel.getError().observe(getViewLifecycleOwner(), error -> {
             Log.e("RCP", error);
