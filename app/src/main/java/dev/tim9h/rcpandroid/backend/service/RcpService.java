@@ -1,16 +1,21 @@
 package dev.tim9h.rcpandroid.backend.service;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
 import dev.tim9h.rcpandroid.backend.client.RcpClient;
 import dev.tim9h.rcpandroid.model.LogiledStatus;
 import dev.tim9h.rcpandroid.model.Track;
 import retrofit2.Call;
 
+@Singleton
 public class RcpService {
 
     private final RcpClient client;
 
-    public RcpService() {
-        client = new RcpClient();
+    @Inject
+    public RcpService(RcpClient client) {
+        this.client = client;
     }
 
     public Call<Void> next() {

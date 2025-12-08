@@ -21,9 +21,11 @@ import com.google.android.material.button.MaterialButton;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 
+import dagger.hilt.android.AndroidEntryPoint;
 import dev.tim9h.rcpandroid.R;
 import dev.tim9h.rcpandroid.databinding.FragmentLightingBinding;
 
+@AndroidEntryPoint
 public class LightingFragment extends Fragment {
 
     private FragmentLightingBinding binding;

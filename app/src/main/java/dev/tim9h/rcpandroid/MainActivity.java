@@ -17,9 +17,11 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.color.DynamicColors;
 
+import dagger.hilt.android.AndroidEntryPoint;
 import dev.tim9h.rcpandroid.databinding.ActivityMainBinding;
 import dev.tim9h.rcpandroid.ui.settings.SettingsActivity;
 
+@AndroidEntryPoint
 public class MainActivity extends AppCompatActivity {
 
     private NavController navController;

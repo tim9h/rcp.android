@@ -1,5 +1,8 @@
 package dev.tim9h.rcpandroid.backend.client;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
 import dev.tim9h.rcpandroid.backend.api.LastFmApi;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -7,11 +10,16 @@ import retrofit2.Retrofit;
 import retrofit2.adapter.guava.GuavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+@Singleton
 public class LastFmClient {
 
     private LastFmApi api;
 
     private static final String BASE_URL = "https://ws.audioscrobbler.com/";
+
+    @Inject
+    public LastFmClient() {
+    }
 
     public LastFmApi getApi() {
         if (api == null) {

@@ -12,6 +12,9 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
+import javax.inject.Inject;
+
+import dagger.hilt.android.lifecycle.HiltViewModel;
 import dev.tim9h.rcpandroid.backend.service.LastFmService;
 import dev.tim9h.rcpandroid.backend.service.RcpService;
 import dev.tim9h.rcpandroid.model.Track;
@@ -21,6 +24,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+@HiltViewModel
 public class MediaViewModel extends ViewModel {
 
     private final MutableLiveData<String> error = new MutableLiveData<>();
@@ -33,16 +37,17 @@ public class MediaViewModel extends ViewModel {
 
     private final MutableLiveData<Intent> openBrowserIntent = new MutableLiveData<>();
 
-    private static PrefsHelper preferences;
+    private final PrefsHelper preferences;
 
     private final RcpService rcpService;
 
     private final LastFmService lastFmService;
 
-    public MediaViewModel(PrefsHelper preferences) {
-        MediaViewModel.preferences = preferences;
-        lastFmService = new LastFmService();
-        rcpService = new RcpService();
+    @Inject
+    public MediaViewModel(PrefsHelper preferences, RcpService rcpService, LastFmService lastFmService) {
+        this.preferences = preferences;
+        this.rcpService = rcpService;
+        this.lastFmService = lastFmService;
     }
 
     public LiveData<Track> getTrack() {

@@ -6,12 +6,16 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import javax.inject.Inject;
+
+import dagger.hilt.android.lifecycle.HiltViewModel;
 import dev.tim9h.rcpandroid.backend.service.RcpService;
 import dev.tim9h.rcpandroid.model.LogiledStatus;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+@HiltViewModel
 public class LightingViewModel extends ViewModel {
 
     private final RcpService rcpService;
@@ -22,8 +26,9 @@ public class LightingViewModel extends ViewModel {
 
     private final MutableLiveData<LogiledStatus> logiledStatus = new MutableLiveData<>();
 
-    public LightingViewModel() {
-        this.rcpService = new RcpService();
+    @Inject
+    public LightingViewModel(RcpService rcpService) {
+        this.rcpService = rcpService;
     }
 
     public void toggleLed(boolean on) {

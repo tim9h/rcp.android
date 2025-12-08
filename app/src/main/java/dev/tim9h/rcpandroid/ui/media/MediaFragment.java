@@ -19,19 +19,19 @@ import androidx.core.view.MenuProvider;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleEventObserver;
-import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 
+import dagger.hilt.android.AndroidEntryPoint;
 import dev.tim9h.rcpandroid.R;
 import dev.tim9h.rcpandroid.databinding.FragmentMediaBinding;
 import dev.tim9h.rcpandroid.model.Track;
 import dev.tim9h.rcpandroid.model.lastfm.TrackInfoResponse;
-import dev.tim9h.rcpandroid.preferences.PrefsHelper;
 import dev.tim9h.rcpandroid.ui.utils.ColorUtils;
 
+@AndroidEntryPoint
 public class MediaFragment extends Fragment {
 
     private FragmentMediaBinding binding;
@@ -47,21 +47,11 @@ public class MediaFragment extends Fragment {
     private static final int ANIMATION_DURATION = 500;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        viewModel = new ViewModelProvider(this, new ViewModelProvider.Factory() {
-            @NonNull
-            @Override
-            public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
-                var preferences = new PrefsHelper(requireContext());
-                //noinspection unchecked
-                return (T) new MediaViewModel(preferences);
-            }
-        }).get(MediaViewModel.class);
-
+        viewModel = new ViewModelProvider(this).get(MediaViewModel.class);
         binding = FragmentMediaBinding.inflate(inflater, container, false);
         var root = binding.getRoot();
 
         viewModel.getTrack().observe(getViewLifecycleOwner(), this::handleTrackChanged);
-
         viewModel.getTrackInfo().observe(getViewLifecycleOwner(), this::handleTrackChanged);
 
         viewModel.isLoading().observe(getViewLifecycleOwner(), isLoading -> {

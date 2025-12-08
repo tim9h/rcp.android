@@ -11,9 +11,11 @@ import com.google.android.material.color.DynamicColors;
 
 import java.util.Objects;
 
+import dagger.hilt.android.AndroidEntryPoint;
 import dev.tim9h.rcpandroid.R;
 import dev.tim9h.rcpandroid.databinding.ActivitySettingsBinding;
 
+@AndroidEntryPoint
 public class SettingsActivity extends AppCompatActivity {
 
     private OnBackPressedCallback onBackPressedCallback;

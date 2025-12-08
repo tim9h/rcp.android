@@ -3,9 +3,9 @@ package dev.tim9h.rcpandroid.backend.client;
 import android.content.SharedPreferences;
 import android.util.Log;
 
-import androidx.preference.PreferenceManager;
+import javax.inject.Inject;
+import javax.inject.Singleton;
 
-import dev.tim9h.rcpandroid.App;
 import dev.tim9h.rcpandroid.backend.api.RcpApi;
 import okhttp3.Authenticator;
 import okhttp3.OkHttpClient;
@@ -14,27 +14,25 @@ import retrofit2.Retrofit;
 import retrofit2.adapter.guava.GuavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+@Singleton
 public class RcpClient {
 
     private RcpApi api;
-
-    private static SharedPreferences preferences;
-
-    private static SharedPreferences.OnSharedPreferenceChangeListener changeListener;
-
+    private final SharedPreferences preferences;
+    private final SharedPreferences.OnSharedPreferenceChangeListener changeListener;
     private Authenticator auth;
-
     private String baseUrl;
 
-    public RcpClient() {
-        preferences = PreferenceManager.getDefaultSharedPreferences(App.getAppContext());
+    @Inject
+    public RcpClient(SharedPreferences preferences) {
+        this.preferences = preferences;
         changeListener = (_, key) -> {
             if (key != null && key.startsWith("rest_")) {
                 Log.i("RCP", "Settings changed");
                 applyChangedPreferences();
             }
         };
-        preferences.registerOnSharedPreferenceChangeListener(changeListener);
+        this.preferences.registerOnSharedPreferenceChangeListener(changeListener);
         applyChangedPreferences();
     }
 
@@ -47,7 +45,7 @@ public class RcpClient {
     }
 
     public RcpApi getApi() {
-        if (baseUrl == null) {
+        if (baseUrl == null || baseUrl.isEmpty()) {
             return null;
         }
         if (api == null) {
@@ -65,11 +63,10 @@ public class RcpClient {
         return api;
     }
 
-    public static void unregisterPreferenceChangeListener() {
+    public void unregisterPreferenceChangeListener() {
         if (preferences != null) {
             preferences.unregisterOnSharedPreferenceChangeListener(changeListener);
             Log.d("RCP", "Preference change listener unregistered");
         }
     }
-
 }

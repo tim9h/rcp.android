@@ -1,16 +1,18 @@
 package dev.tim9h.rcpandroid.preferences;
 
-import android.content.Context;
 import android.content.SharedPreferences;
 
-import androidx.preference.PreferenceManager;
+import javax.inject.Inject;
+import javax.inject.Singleton;
 
+@Singleton
 public class PrefsHelper {
 
     private final SharedPreferences preferences;
 
-    public PrefsHelper(Context ctx) {
-        preferences = PreferenceManager.getDefaultSharedPreferences(ctx.getApplicationContext());
+    @Inject
+    public PrefsHelper(SharedPreferences preferences) {
+        this.preferences = preferences;
     }
 
     public void saveString(String key, String value) {
