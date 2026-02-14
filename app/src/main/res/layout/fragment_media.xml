@@ -13,7 +13,6 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="75dp"
-        android:layout_marginBottom="10dp"
         app:layout_constraintBottom_toTopOf="@id/media_button_bar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -44,7 +43,7 @@
                     app:shapeAppearanceOverlay="@style/RoundedImageView"
                     tools:srcCompat="@drawable/default_album_cover" />
 
-                <Button
+                <com.google.android.material.button.MaterialButton
                     android:id="@+id/btn_title"
                     style="@style/Widget.Material3.Button"
                     android:layout_width="320dp"
@@ -55,7 +54,7 @@
                     android:singleLine="true"
                     tools:text="Royal Beggars" />
 
-                <Button
+                <com.google.android.material.button.MaterialButton
                     android:id="@+id/btn_artist"
                     style="@style/Widget.Material3.Button.TonalButton"
                     android:layout_width="320dp"
@@ -66,7 +65,7 @@
                     android:singleLine="true"
                     tools:text="Architects" />
 
-                <Button
+                <com.google.android.material.button.MaterialButton
                     android:id="@+id/btn_album"
                     style="@style/Widget.Material3.Button.TonalButton"
                     android:layout_width="320dp"
@@ -85,9 +84,9 @@
         android:id="@+id/media_button_bar"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="15dp"
-        android:layout_marginEnd="15dp"
-        android:layout_marginBottom="10dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp"
+        android:padding="0dp"
         android:gravity="center"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -99,7 +98,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_stop"
                 style="@style/Widget.Material3.Button.IconButton"
                 android:layout_width="wrap_content"
@@ -108,7 +107,7 @@
                 app:icon="@drawable/stop"
                 app:iconSize="30dp" />
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_mute"
                 style="@style/Widget.Material3.Button.IconButton"
                 android:layout_width="wrap_content"
@@ -119,39 +118,51 @@
 
         </LinearLayout>
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_previous"
-            style="@style/Widget.Material3.Button.IconButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/Widget.Material3.Button.IconButton.Outlined"
             android:contentDescription="@string/previous"
             app:icon="@drawable/previous"
-            app:iconSize="50dp" />
+            app:iconGravity="textStart"
+            app:iconPadding="0dp"
+            app:iconSize="30dp"
+            android:layout_width="90dp"
+            android:layout_height="100dp" />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_playpause"
-            style="@style/Widget.Material3.Button.IconButton.Filled.Tonal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/Widget.Material3.Button.IconButton.Filled"
+            android:layout_width="110dp"
+            android:layout_height="110dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="15dp"
             android:contentDescription="@string/play_pause"
             app:icon="@drawable/playpause"
-            app:iconSize="50dp" />
+            app:iconGravity="textStart"
+            app:iconPadding="0dp"
+            app:iconSize="50dp"
 
-        <Button
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_next"
-            style="@style/Widget.Material3.Button.IconButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/Widget.Material3.Button.IconButton.Outlined"
             android:contentDescription="@string/next"
             app:icon="@drawable/next"
-            app:iconSize="50dp" />
+            app:iconGravity="textStart"
+            app:iconPadding="0dp"
+            android:layout_width="90dp"
+            android:layout_height="100dp"
+            app:iconSize="30dp" />
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_volup"
                 style="@style/Widget.Material3.Button.IconButton"
                 android:layout_width="wrap_content"
@@ -160,7 +171,7 @@
                 app:icon="@drawable/volume_up"
                 app:iconSize="30dp" />
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_voldown"
                 style="@style/Widget.Material3.Button.IconButton"
                 android:layout_width="wrap_content"
