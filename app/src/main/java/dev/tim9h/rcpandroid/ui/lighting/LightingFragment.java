@@ -46,7 +46,7 @@ public class LightingFragment extends Fragment {
                 binding.toggleButton.setIconTintResource(isColorDark(binding.colorPickerView.getCurrentColor()) ? R.color.white : R.color.black);
             }
         });
-        binding.toggleButton.setOnClickListener(_ -> animateToggleButton(binding.toggleButton));
+//        binding.toggleButton.setOnClickListener(_ -> animateToggleButton(binding.toggleButton));
 
         viewModel.getError().observe(getViewLifecycleOwner(), error -> {
             Log.e("RCP", error);
