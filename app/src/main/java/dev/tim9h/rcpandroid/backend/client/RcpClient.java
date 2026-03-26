@@ -7,7 +7,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import dev.tim9h.rcpandroid.backend.api.RcpApi;
-import okhttp3.Authenticator;
+import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
@@ -20,7 +20,7 @@ public class RcpClient {
     private RcpApi api;
     private final SharedPreferences preferences;
     private final SharedPreferences.OnSharedPreferenceChangeListener changeListener;
-    private Authenticator auth;
+    private Interceptor authInterceptor;
     private String baseUrl;
 
     @Inject
@@ -39,7 +39,12 @@ public class RcpClient {
     private void applyChangedPreferences() {
         baseUrl = preferences.getString("rest_base_url", "");
         var apiKey = preferences.getString("rest_api_key", "");
-        auth = (_, response) -> response.request().newBuilder().header("X-API-Key", apiKey).build();
+        authInterceptor = chain -> {
+            var request = chain.request().newBuilder()
+                    .header("X-API-Key", apiKey != null ? apiKey : "")
+                    .build();
+            return chain.proceed(request);
+        };
         api = null;
         Log.d("RCP", "init: baseUrl: " + baseUrl);
     }
@@ -51,7 +56,10 @@ public class RcpClient {
         if (api == null) {
             var loggingInterceptor = new HttpLoggingInterceptor();
             loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-            var client = new OkHttpClient.Builder().addInterceptor(loggingInterceptor).authenticator(auth).build();
+            var client = new OkHttpClient.Builder()
+                    .addInterceptor(loggingInterceptor)
+                    .addInterceptor(authInterceptor)
+                    .build();
             var retrofit = new Retrofit.Builder()
                     .baseUrl(baseUrl)
                     .addConverterFactory(GsonConverterFactory.create())
