@@ -37,6 +37,10 @@ public class MediaViewModel extends ViewModel {
 
     private final MutableLiveData<Intent> openBrowserIntent = new MutableLiveData<>();
 
+    private final MutableLiveData<Boolean> volumeUpPressed = new MutableLiveData<>(false);
+
+    private final MutableLiveData<Boolean> volumeDownPressed = new MutableLiveData<>(false);
+
     private final PrefsHelper preferences;
 
     private final RcpService rcpService;
@@ -68,6 +72,22 @@ public class MediaViewModel extends ViewModel {
 
     public LiveData<Intent> getOpenBrowserIntent() {
         return openBrowserIntent;
+    }
+
+    public LiveData<Boolean> isVolumeUpPressed() {
+        return volumeUpPressed;
+    }
+
+    public LiveData<Boolean> isVolumeDownPressed() {
+        return volumeDownPressed;
+    }
+
+    public void setVolumeUpPressed(boolean pressed) {
+        volumeUpPressed.setValue(pressed);
+    }
+
+    public void setVolumeDownPressed(boolean pressed) {
+        volumeDownPressed.setValue(pressed);
     }
 
     public void resetOpenBrowserIntent() {

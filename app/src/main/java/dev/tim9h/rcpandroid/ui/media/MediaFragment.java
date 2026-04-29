@@ -103,6 +103,9 @@ public class MediaFragment extends Fragment {
             }
         });
 
+        viewModel.isVolumeUpPressed().observe(getViewLifecycleOwner(), binding.btnVolup::setPressed);
+        viewModel.isVolumeDownPressed().observe(getViewLifecycleOwner(), binding.btnVoldown::setPressed);
+
         return root;
     }
 

@@ -99,13 +99,27 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_VOLUME_UP) {
+            mediaViewModel.setVolumeUpPressed(true);
             mediaViewModel.volumeUp();
             return true;
         } else if (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN) {
+            mediaViewModel.setVolumeDownPressed(true);
             mediaViewModel.volumeDown();
             return true;
         }
         return super.onKeyDown(keyCode, event);
+    }
+
+    @Override
+    public boolean onKeyUp(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_VOLUME_UP) {
+            mediaViewModel.setVolumeUpPressed(false);
+            return true;
+        } else if (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN) {
+            mediaViewModel.setVolumeDownPressed(false);
+            return true;
+        }
+        return super.onKeyUp(keyCode, event);
     }
 
 }
