@@ -26,7 +26,7 @@ public class RcpClient {
     @Inject
     public RcpClient(SharedPreferences preferences) {
         this.preferences = preferences;
-        changeListener = (_, key) -> {
+        changeListener = (prefs, key) -> {
             if (key != null && key.startsWith("rest_")) {
                 Log.i("RCP", "Settings changed");
                 applyChangedPreferences();
@@ -41,7 +41,7 @@ public class RcpClient {
         var apiKey = preferences.getString("rest_api_key", "");
         authInterceptor = chain -> {
             var request = chain.request().newBuilder()
-                    .header("X-API-Key", apiKey != null ? apiKey : "")
+                    .header("X-API-Key", apiKey)
                     .build();
             return chain.proceed(request);
         };

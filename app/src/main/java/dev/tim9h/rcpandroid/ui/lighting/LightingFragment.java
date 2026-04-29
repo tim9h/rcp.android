@@ -1,22 +1,17 @@
 package dev.tim9h.rcpandroid.ui.lighting;
 
-import android.animation.ObjectAnimator;
-import android.animation.PropertyValuesHolder;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.OvershootInterpolator;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.graphics.ColorUtils;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-
-import com.google.android.material.button.MaterialButton;
 
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
@@ -36,7 +31,7 @@ public class LightingFragment extends Fragment {
         binding = FragmentLightingBinding.inflate(inflater, container, false);
         var root = binding.getRoot();
 
-        binding.toggleButton.addOnCheckedChangeListener((_, checked) -> {
+        binding.toggleButton.addOnCheckedChangeListener((btn, checked) -> {
             viewModel.toggleLed(checked);
             if (!checked) {
                 binding.toggleButton.setBackgroundColor(Color.TRANSPARENT);
@@ -60,7 +55,7 @@ public class LightingFragment extends Fragment {
             binding.brightnessSlider.setValue(getBrightnessFromHexColor(status.color()));
         });
 
-        binding.brightnessSlider.addOnChangeListener((_, brightness, _) -> binding.colorPickerView.setBrightness(brightness));
+        binding.brightnessSlider.addOnChangeListener((slider, brightness, b) -> binding.colorPickerView.setBrightness(brightness));
 
         binding.colorPickerView.setOnColorChangedListener(color -> {
             var hex = String.format("#%06X", (0xFFFFFF & color));
@@ -76,33 +71,6 @@ public class LightingFragment extends Fragment {
 
     private static boolean isColorDark(int color) {
         return ColorUtils.calculateLuminance(color) < 0.3;
-    }
-
-
-    private void animateToggleButton(MaterialButton button) {
-        var scale = button.isChecked() ? 1.1f : 0.9f;
-        var scaleX = PropertyValuesHolder.ofFloat(View.SCALE_X, scale);
-        var scaleY = PropertyValuesHolder.ofFloat(View.SCALE_Y, scale);
-
-        var animator = ObjectAnimator.ofPropertyValuesHolder(button, scaleX, scaleY);
-        animator.setDuration(250); // Animation duration in milliseconds
-        animator.setInterpolator(new OvershootInterpolator()); // Gives a slight "overshoot" effect
-
-        // Animate back to the original size
-        var reverseAnimator = ObjectAnimator.ofPropertyValuesHolder(button,
-                PropertyValuesHolder.ofFloat(View.SCALE_X, 1.0f),
-                PropertyValuesHolder.ofFloat(View.SCALE_Y, 1.0f)
-        );
-        reverseAnimator.setDuration(250);
-        reverseAnimator.setInterpolator(new OvershootInterpolator());
-
-        animator.addListener(new android.animation.AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(android.animation.Animator animation) {
-                reverseAnimator.start();
-            }
-        });
-        animator.start();
     }
 
     private static float getBrightnessFromHexColor(String hexColor) {

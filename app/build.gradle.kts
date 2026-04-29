@@ -1,3 +1,5 @@
+import com.android.sdklib.AndroidVersion
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -7,12 +9,12 @@ plugins {
 
 android {
     namespace = "dev.tim9h.rcpandroid"
-    compileSdk = 36
+    compileSdk = AndroidVersion.VersionCodes.BAKLAVA
 
     defaultConfig {
         applicationId = "dev.tim9h.rcpandroid"
-        minSdk = 35
-        targetSdk = 36
+        minSdk = AndroidVersion.VersionCodes.VANILLA_ICE_CREAM
+        targetSdk = AndroidVersion.VersionCodes.BAKLAVA
         versionCode = 1
         versionName = "1.0"
 
@@ -29,8 +31,8 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_24
-        targetCompatibility = JavaVersion.VERSION_24
+        sourceCompatibility = JavaVersion.VERSION_21
+        targetCompatibility = JavaVersion.VERSION_21
     }
     buildFeatures {
         viewBinding = true

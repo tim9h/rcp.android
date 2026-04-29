@@ -47,7 +47,7 @@ public class MediaFragment extends Fragment {
     private static final int ANIMATION_DURATION = 500;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        viewModel = new ViewModelProvider(this).get(MediaViewModel.class);
+        viewModel = new ViewModelProvider(requireActivity()).get(MediaViewModel.class);
         binding = FragmentMediaBinding.inflate(inflater, container, false);
         var root = binding.getRoot();
 
@@ -65,19 +65,19 @@ public class MediaFragment extends Fragment {
             }
         });
 
-        binding.btnTitle.setOnClickListener(_ -> viewModel.openLastFmTrack());
-        binding.btnArtist.setOnClickListener(_ -> viewModel.openLastFmArtist());
-        binding.btnAlbum.setOnClickListener(_ -> viewModel.openLastFmAlbum());
+        binding.btnTitle.setOnClickListener(view -> viewModel.openLastFmTrack());
+        binding.btnArtist.setOnClickListener(view -> viewModel.openLastFmArtist());
+        binding.btnAlbum.setOnClickListener(view -> viewModel.openLastFmAlbum());
 
-        binding.btnStop.setOnClickListener(_ -> viewModel.stop());
-        binding.btnMute.setOnClickListener(_ -> viewModel.mute());
+        binding.btnStop.setOnClickListener(view -> viewModel.stop());
+        binding.btnMute.setOnClickListener(view -> viewModel.mute());
 
-        binding.btnPlaypause.setOnClickListener(_ -> viewModel.play());
-        binding.btnNext.setOnClickListener(_ -> viewModel.next());
-        binding.btnPrevious.setOnClickListener(_ -> viewModel.previous());
+        binding.btnPlaypause.setOnClickListener(view -> viewModel.play());
+        binding.btnNext.setOnClickListener(view -> viewModel.next());
+        binding.btnPrevious.setOnClickListener(view -> viewModel.previous());
 
-        binding.btnVolup.setOnClickListener(_ -> viewModel.volumeUp());
-        binding.btnVoldown.setOnClickListener(_ -> viewModel.volumeDown());
+        binding.btnVolup.setOnClickListener(view -> viewModel.volumeUp());
+        binding.btnVoldown.setOnClickListener(view -> viewModel.volumeDown());
 
         viewModel.getError().observe(getViewLifecycleOwner(), error -> {
             Log.e("RCP", error);
@@ -181,7 +181,7 @@ public class MediaFragment extends Fragment {
             }
         };
 
-        getViewLifecycleOwner().getLifecycle().addObserver((LifecycleEventObserver) (_, event) -> {
+        getViewLifecycleOwner().getLifecycle().addObserver((LifecycleEventObserver) (lo, event) -> {
             if (event == Lifecycle.Event.ON_START) {
                 npPeriodically();
             } else if (event == Lifecycle.Event.ON_STOP) {
