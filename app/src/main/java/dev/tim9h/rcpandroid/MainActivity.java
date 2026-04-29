@@ -2,6 +2,7 @@ package dev.tim9h.rcpandroid;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -10,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -19,6 +21,7 @@ import com.google.android.material.color.DynamicColors;
 
 import dagger.hilt.android.AndroidEntryPoint;
 import dev.tim9h.rcpandroid.databinding.ActivityMainBinding;
+import dev.tim9h.rcpandroid.ui.media.MediaViewModel;
 import dev.tim9h.rcpandroid.ui.settings.SettingsActivity;
 
 @AndroidEntryPoint
@@ -27,6 +30,8 @@ public class MainActivity extends AppCompatActivity {
     private NavController navController;
 
     private ActivityMainBinding binding;
+
+    private MediaViewModel mediaViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,13 +55,15 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(binding.navView, navController);
 
+        mediaViewModel = new ViewModelProvider(this).get(MediaViewModel.class);
+
         disableMenu(binding, R.id.navigation_system);
 
         fixEdgeToEdgeView();
     }
 
     private void fixEdgeToEdgeView() {
-        ViewCompat.setOnApplyWindowInsetsListener(binding.getRoot(), (_, insets) -> {
+        ViewCompat.setOnApplyWindowInsetsListener(binding.getRoot(), (view, insets) -> {
             var systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             binding.navHostFragmentActivityMain.setPadding(0, systemBars.top, 0, systemBars.bottom);
             return insets;
@@ -87,6 +94,18 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onSupportNavigateUp() {
         return navController.navigateUp() || super.onSupportNavigateUp();
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_VOLUME_UP) {
+            mediaViewModel.volumeUp();
+            return true;
+        } else if (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN) {
+            mediaViewModel.volumeDown();
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 
 }
