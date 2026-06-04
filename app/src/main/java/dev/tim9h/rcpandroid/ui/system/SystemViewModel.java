@@ -26,6 +26,8 @@ public class SystemViewModel extends ViewModel {
 
     private final MutableLiveData<String> error = new MutableLiveData<>();
 
+    private final MutableLiveData<Integer> success = new MutableLiveData<>();
+
     @Inject
     public SystemViewModel(RcpService rcpService) {
         this.rcpService = rcpService;
@@ -41,11 +43,29 @@ public class SystemViewModel extends ViewModel {
         return mText;
     }
 
-    public <T> Callback<T> createCallback() {
+    public LiveData<String> getError() {
+        return error;
+    }
+
+    public LiveData<Integer> getSuccess() {
+        return success;
+    }
+
+    public void sendNotification(String message) {
+        isLoading.setValue(true);
+        rcpService.sendNotification(message).enqueue(createCallback(dev.tim9h.rcpandroid.R.string.notification_sent));
+    }
+
+    public <T> Callback<T> createCallback(int successMessageResId) {
         return new Callback<>() {
             @Override
             public void onResponse(@NonNull Call<T> call, @NonNull Response<T> response) {
                 isLoading.setValue(false);
+                if (response.isSuccessful()) {
+                    success.setValue(successMessageResId);
+                } else {
+                    error.setValue("Error: " + response.code());
+                }
             }
 
             @Override
@@ -55,6 +75,18 @@ public class SystemViewModel extends ViewModel {
                 error.postValue(t.getMessage());
             }
         };
+    }
+
+    public void lockWorkstation() {
+        rcpService.lockWorkstation().enqueue(createCallback(dev.tim9h.rcpandroid.R.string.workstation_locked));
+    }
+
+    public void shutdownNow() {
+        rcpService.shutdownNow().enqueue(createCallback(dev.tim9h.rcpandroid.R.string.shutdown_scheduled));
+    }
+
+    public void shutdownLater(String when) {
+        rcpService.shutdownLater(when).enqueue(createCallback(dev.tim9h.rcpandroid.R.string.shutdown_scheduled));
     }
 
 }
