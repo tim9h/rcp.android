@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -49,33 +50,39 @@ public class SystemFragment extends Fragment {
     private void showSendNotificationDialog() {
         var dialogBinding = DialogTextfieldBinding.inflate(getLayoutInflater());
         dialogBinding.tilInput.setHint(R.string.message);
-        new MaterialAlertDialogBuilder(requireContext())
+        var dialog = new MaterialAlertDialogBuilder(requireContext())
                 .setTitle(R.string.send_notification)
                 .setView(dialogBinding.getRoot())
-                .setPositiveButton(R.string.send, (dialog, which) -> {
+                .setPositiveButton(R.string.send, (d, which) -> {
                     var message = Objects.requireNonNull(dialogBinding.etInput.getText()).toString();
                     if (!message.isEmpty()) {
                         viewModel.sendNotification(message);
                     }
                 })
                 .setNegativeButton(R.string.cancel, null)
-                .show();
+                .create();
+        Objects.requireNonNull(dialog.getWindow()).setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+        dialog.show();
+        dialogBinding.etInput.requestFocus();
     }
 
     private void showShutdownDialog() {
         var dialogBinding = DialogTextfieldBinding.inflate(getLayoutInflater());
         dialogBinding.tilInput.setHint(R.string.when);
-        new MaterialAlertDialogBuilder(requireContext())
+        var dialog = new MaterialAlertDialogBuilder(requireContext())
                 .setTitle(R.string.shutdown_custom)
                 .setView(dialogBinding.getRoot())
-                .setPositiveButton(R.string.shutdown, (dialog, which) -> {
+                .setPositiveButton(R.string.shutdown, (d, which) -> {
                     var when = Objects.requireNonNull(dialogBinding.etInput.getText()).toString();
                     if (!when.isEmpty()) {
                         viewModel.shutdownLater(when);
                     }
                 })
                 .setNegativeButton(R.string.cancel, null)
-                .show();
+                .create();
+        Objects.requireNonNull(dialog.getWindow()).setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+        dialog.show();
+        dialogBinding.etInput.requestFocus();
     }
 
     @Override
