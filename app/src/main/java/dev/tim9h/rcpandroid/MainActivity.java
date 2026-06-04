@@ -57,8 +57,6 @@ public class MainActivity extends AppCompatActivity {
 
         mediaViewModel = new ViewModelProvider(this).get(MediaViewModel.class);
 
-        disableMenu(binding, R.id.navigation_system);
-
         fixEdgeToEdgeView();
     }
 
@@ -68,11 +66,6 @@ public class MainActivity extends AppCompatActivity {
             binding.navHostFragmentActivityMain.setPadding(0, systemBars.top, 0, systemBars.bottom);
             return insets;
         });
-    }
-
-    private static void disableMenu(ActivityMainBinding binding, int id) {
-        var menuItem = binding.navView.getMenu().findItem(id);
-        menuItem.setEnabled(false);
     }
 
     @Override

@@ -4,19 +4,72 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="16dp"
     tools:context=".ui.system.SystemFragment">
 
-    <TextView
-        android:id="@+id/text_dashboard"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:textAlignment="center"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_lock_workstation"
+        android:layout_width="0dp"
+        android:layout_height="64dp"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
+        android:text="@string/lock_workstation"
+        app:cornerRadius="@dimen/rounded_corners"
+        app:icon="@drawable/computer"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.button.MaterialButtonToggleGroup
+        android:id="@+id/toggle_group_shutdown"
+        android:layout_width="0dp"
+        android:layout_height="64dp"
+        android:layout_marginTop="12dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btn_lock_workstation">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_shutdown_now"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:insetLeft="0dp"
+            android:insetRight="0dp"
+            android:text="@string/shutdown_now"
+            app:cornerRadius="@dimen/rounded_corners"
+            app:strokeColor="#33FFFFFF"
+            app:strokeWidth="1dp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_shutdown_custom"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:insetLeft="0dp"
+            android:insetRight="0dp"
+            android:text="@string/shutdown_custom"
+            app:cornerRadius="@dimen/rounded_corners"
+            app:strokeColor="#33FFFFFF"
+            app:strokeWidth="1dp" />
+
+    </com.google.android.material.button.MaterialButtonToggleGroup>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_send_notification"
+        android:layout_width="0dp"
+        android:layout_height="64dp"
+        android:layout_marginTop="12dp"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
+        android:text="@string/send_notification"
+        app:cornerRadius="@dimen/rounded_corners"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toggle_group_shutdown" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

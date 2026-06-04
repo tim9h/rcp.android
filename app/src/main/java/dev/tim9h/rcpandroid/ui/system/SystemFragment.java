@@ -9,21 +9,21 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import dagger.hilt.android.AndroidEntryPoint;
 import dev.tim9h.rcpandroid.databinding.FragmentSystemBinding;
 
+@AndroidEntryPoint
 public class SystemFragment extends Fragment {
 
     private FragmentSystemBinding binding;
 
+    private SystemViewModel viewModel;
+
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        var viewModel = new ViewModelProvider(this).get(SystemViewModel.class);
+        viewModel = new ViewModelProvider(requireActivity()).get(SystemViewModel.class);
 
         binding = FragmentSystemBinding.inflate(inflater, container, false);
-        var root = binding.getRoot();
-
-        final var textView = binding.textDashboard;
-        viewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
-        return root;
+        return binding.getRoot();
     }
 
     @Override

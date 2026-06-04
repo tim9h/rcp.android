@@ -6,4 +6,20 @@
         <item name="cornerSize">@dimen/rounded_corners</item>
     </style>
 
+    <style name="ShapeAppearance.App.Button.Left" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSizeTopLeft">@dimen/rounded_corners</item>
+        <item name="cornerSizeBottomLeft">@dimen/rounded_corners</item>
+        <item name="cornerSizeTopRight">0dp</item>
+        <item name="cornerSizeBottomRight">0dp</item>
+    </style>
+
+    <style name="ShapeAppearance.App.Button.Right" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSizeTopRight">@dimen/rounded_corners</item>
+        <item name="cornerSizeBottomRight">@dimen/rounded_corners</item>
+        <item name="cornerSizeTopLeft">0dp</item>
+        <item name="cornerSizeBottomLeft">0dp</item>
+    </style>
+
 </resources>
