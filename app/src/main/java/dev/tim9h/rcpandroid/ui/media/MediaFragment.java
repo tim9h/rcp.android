@@ -22,13 +22,13 @@ import androidx.lifecycle.LifecycleEventObserver;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 
 import dagger.hilt.android.AndroidEntryPoint;
 import dev.tim9h.rcpandroid.R;
 import dev.tim9h.rcpandroid.databinding.FragmentMediaBinding;
 import dev.tim9h.rcpandroid.model.Track;
 import dev.tim9h.rcpandroid.model.lastfm.TrackInfoResponse;
+import dev.tim9h.rcpandroid.ui.utils.AnimationUtils;
 import dev.tim9h.rcpandroid.ui.utils.ColorUtils;
 
 @AndroidEntryPoint
@@ -45,8 +45,6 @@ public class MediaFragment extends Fragment {
     private final Handler handler = new Handler(Looper.getMainLooper());
 
     private static final long NP_REFRESH_INTERVAL_MS = 5000;
-
-    private static final int ANIMATION_DURATION = 500;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         viewModel = new ViewModelProvider(requireActivity()).get(MediaViewModel.class);
@@ -144,10 +142,13 @@ public class MediaFragment extends Fragment {
         }
         currentAlbumUrl = url;
         Log.i("RCP", "Loading album art from URL: " + url);
-        Glide.with(this)
-                .load(url)
-                .transition(DrawableTransitionOptions.withCrossFade(ANIMATION_DURATION))
-                .into(binding.albumArtImageview);
+        AnimationUtils.performExpressiveTransition(binding.albumArtImageview, () -> {
+            if (binding != null) {
+                Glide.with(this)
+                        .load(url)
+                        .into(binding.albumArtImageview);
+            }
+        });
     }
 
     private void setDefaultAlbumArt() {
@@ -155,9 +156,13 @@ public class MediaFragment extends Fragment {
             return;
         }
         currentAlbumUrl = null;
-        Glide.with(this)
-                .load(R.drawable.default_album_cover)
-                .into(binding.albumArtImageview);
+        AnimationUtils.performExpressiveTransition(binding.albumArtImageview, () -> {
+            if (binding != null) {
+                Glide.with(this)
+                        .load(R.drawable.default_album_cover)
+                        .into(binding.albumArtImageview);
+            }
+        });
     }
 
     @Override
@@ -226,11 +231,16 @@ public class MediaFragment extends Fragment {
 
             binding.albumArtImageview.animate()
                     .alpha(0f)
-                    .setDuration(ANIMATION_DURATION)
+                    .scaleX(0.8f)
+                    .scaleY(0.8f)
+                    .setDuration(AnimationUtils.ANIMATION_DURATION)
+                    .setInterpolator(new android.view.animation.AccelerateInterpolator())
                     .withEndAction(() -> {
                         if (binding != null) {
                             Glide.with(this).clear(binding.albumArtImageview);
                             binding.albumArtImageview.setAlpha(1f);
+                            binding.albumArtImageview.setScaleX(1f);
+                            binding.albumArtImageview.setScaleY(1f);
                             currentAlbumUrl = null;
                         }
                     }).start();
