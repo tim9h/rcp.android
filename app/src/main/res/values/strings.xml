@@ -26,7 +26,7 @@
     <string name="brightness">Brightness</string>
     <string name="lock_workstation">Lock Workstation</string>
     <string name="shutdown_now">Shutdown now</string>
-    <string name="shutdown_custom">Custom Shutdown</string>
+    <string name="shutdown_custom">Shutdown later</string>
     <string name="shutdown">Shutdown</string>
     <string name="send_notification">Send Notification</string>
     <string name="message">Message</string>
