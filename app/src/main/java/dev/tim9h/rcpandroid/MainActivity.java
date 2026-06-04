@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
     private void fixEdgeToEdgeView() {
         ViewCompat.setOnApplyWindowInsetsListener(binding.getRoot(), (view, insets) -> {
             var systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            binding.navHostFragmentActivityMain.setPadding(0, systemBars.top, 0, systemBars.bottom);
+            binding.navView.setPadding(0, 0, 0, systemBars.bottom);
             return insets;
         });
     }
