@@ -150,24 +150,34 @@ public class MediaViewModel extends ViewModel {
     }
 
     public void nowPlaying() {
-        isLoading.setValue(true);
+        nowPlaying(true);
+    }
+
+    public void nowPlaying(boolean showLoading) {
+        if (showLoading) {
+            isLoading.setValue(true);
+        }
         try {
             var call = rcpService.nowPlaying();
             call.enqueue(new Callback<>() {
                 @Override
                 public void onResponse(Call<Track> call, Response<Track> response) {
-                    isLoading.setValue(false);
+                    if (showLoading) {
+                        isLoading.setValue(false);
+                    }
                     var t = response.body();
                     var trackChanged = track.getValue() == null || !track.getValue().equals(t);
                     track.postValue(t);
                     if (trackChanged && t != null) {
-                        trackInfo(t.artist(), t.title());
+                        trackInfo(t.artist(), t.title(), showLoading);
                     }
                 }
 
                 @Override
                 public void onFailure(Call<Track> call, Throwable t) {
-                    isLoading.setValue(false);
+                    if (showLoading) {
+                        isLoading.setValue(false);
+                    }
                     Log.e("RCP", "Error while calling API", t);
                     error.postValue(t.getMessage());
                 }
@@ -177,19 +187,25 @@ public class MediaViewModel extends ViewModel {
         }
     }
 
-    private void trackInfo(String artist, String title) {
-        isLoading.setValue(true);
+    private void trackInfo(String artist, String title, boolean showLoading) {
+        if (showLoading) {
+            isLoading.setValue(true);
+        }
         var call = lastFmService.getTrackInfo(artist, title);
         call.enqueue(new Callback<>() {
             @Override
             public void onResponse(Call<TrackInfoResponse> call, Response<TrackInfoResponse> response) {
                 trackInfo.postValue(response.body());
-                isLoading.setValue(false);
+                if (showLoading) {
+                    isLoading.setValue(false);
+                }
             }
 
             @Override
             public void onFailure(Call<TrackInfoResponse> call, Throwable t) {
-                isLoading.setValue(false);
+                if (showLoading) {
+                    isLoading.setValue(false);
+                }
                 Log.e("RCP", "Error while calling Last.fm API", t);
                 error.postValue(t.getMessage());
             }

@@ -179,7 +179,7 @@ public class MediaFragment extends Fragment {
 
         nowPlayingRunnable = () -> {
             if (isAdded() && getView() != null && viewModel != null) {
-                viewModel.nowPlaying();
+                viewModel.nowPlaying(false);
                 handler.postDelayed(nowPlayingRunnable, NP_REFRESH_INTERVAL_MS);
             }
         };
