@@ -3,8 +3,6 @@ package dev.tim9h.rcpandroid.backend.api;
 import dev.tim9h.rcpandroid.model.LogiledStatus;
 import dev.tim9h.rcpandroid.model.Track;
 import retrofit2.Call;
-import retrofit2.http.Field;
-import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
@@ -36,16 +34,13 @@ public interface RcpApi {
     Call<Void> lock();
 
     @POST("shutdown")
-    @FormUrlEncoded
-    Call<Void> shutdown(@Field("time") String time);
+    Call<Void> shutdown(@Query("time") String time);
 
     @POST("shutdown")
-    @FormUrlEncoded
     Call<Void> shutdown();
 
     @POST("toast")
-    @FormUrlEncoded
-    Call<Void> sendNotification();
+    Call<Void> sendNotification(@Query("message") String message);
 
     @GET("np")
     Call<Track> nowPlaying();

@@ -66,4 +66,20 @@ public class RcpService {
         return client.getApi().logiled(color);
     }
 
+    public Call<Void> sendNotification(String message) {
+        return client.getApi().sendNotification(message);
+    }
+
+    public Call<Void> lockWorkstation() {
+        return client.getApi().lock();
+    }
+
+    public Call<Void> shutdownNow() {
+        return client.getApi().shutdown();
+    }
+
+    public Call<Void> shutdownLater(String when) {
+        return client.getApi().shutdown(when);
+    }
+
 }
