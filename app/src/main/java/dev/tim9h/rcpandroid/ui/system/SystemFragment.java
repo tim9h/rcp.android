@@ -37,8 +37,18 @@ public class SystemFragment extends Fragment {
         binding.btnShutdownNow.setOnClickListener(v -> viewModel.shutdownNow());
         binding.btnSendNotification.setOnClickListener(v -> showSendNotificationDialog());
 
-        viewModel.getSuccess().observe(getViewLifecycleOwner(), resId -> Toast.makeText(requireContext(), resId, Toast.LENGTH_SHORT).show());
-        viewModel.getError().observe(getViewLifecycleOwner(), error -> Toast.makeText(requireContext(), error, Toast.LENGTH_LONG).show());
+        viewModel.getSuccess().observe(getViewLifecycleOwner(), resId -> {
+            if (resId != null) {
+                Toast.makeText(requireContext(), resId, Toast.LENGTH_SHORT).show();
+                viewModel.clearSuccess();
+            }
+        });
+        viewModel.getError().observe(getViewLifecycleOwner(), error -> {
+            if (error != null) {
+                Toast.makeText(requireContext(), error, Toast.LENGTH_LONG).show();
+                viewModel.clearError();
+            }
+        });
 
         return binding.getRoot();
     }

@@ -51,6 +51,14 @@ public class SystemViewModel extends ViewModel {
         return success;
     }
 
+    public void clearSuccess() {
+        success.setValue(null);
+    }
+
+    public void clearError() {
+        error.setValue(null);
+    }
+
     public void sendNotification(String message) {
         isLoading.setValue(true);
         rcpService.sendNotification(message).enqueue(createCallback(dev.tim9h.rcpandroid.R.string.notification_sent));
