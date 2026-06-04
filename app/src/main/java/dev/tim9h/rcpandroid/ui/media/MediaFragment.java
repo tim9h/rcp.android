@@ -40,6 +40,8 @@ public class MediaFragment extends Fragment {
 
     private Runnable nowPlayingRunnable;
 
+    private String currentAlbumUrl;
+
     private final Handler handler = new Handler(Looper.getMainLooper());
 
     private static final long NP_REFRESH_INTERVAL_MS = 5000;
@@ -137,6 +139,10 @@ public class MediaFragment extends Fragment {
     }
 
     private void replaceAlbumCover(String url) {
+        if (url.equals(currentAlbumUrl)) {
+            return;
+        }
+        currentAlbumUrl = url;
         Log.i("RCP", "Loading album art from URL: " + url);
         Glide.with(this)
                 .load(url)
@@ -145,6 +151,10 @@ public class MediaFragment extends Fragment {
     }
 
     private void setDefaultAlbumArt() {
+        if (currentAlbumUrl == null) {
+            return;
+        }
+        currentAlbumUrl = null;
         Glide.with(this)
                 .load(R.drawable.default_album_cover)
                 .into(binding.albumArtImageview);
@@ -221,6 +231,7 @@ public class MediaFragment extends Fragment {
                         if (binding != null) {
                             Glide.with(this).clear(binding.albumArtImageview);
                             binding.albumArtImageview.setAlpha(1f);
+                            currentAlbumUrl = null;
                         }
                     }).start();
 
