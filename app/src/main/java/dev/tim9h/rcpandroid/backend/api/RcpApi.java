@@ -39,6 +39,14 @@ public interface RcpApi {
     @FormUrlEncoded
     Call<Void> shutdown(@Field("time") String time);
 
+    @POST("shutdown")
+    @FormUrlEncoded
+    Call<Void> shutdown();
+
+    @POST("toast")
+    @FormUrlEncoded
+    Call<Void> sendNotification();
+
     @GET("np")
     Call<Track> nowPlaying();
 
