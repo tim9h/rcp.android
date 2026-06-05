@@ -37,6 +37,8 @@ public class MediaViewModel extends ViewModel {
 
     private final MutableLiveData<Intent> openBrowserIntent = new MutableLiveData<>();
 
+    private final MutableLiveData<Integer> status = new MutableLiveData<>();
+
     private final MutableLiveData<Boolean> volumeUpPressed = new MutableLiveData<>(false);
 
     private final MutableLiveData<Boolean> volumeDownPressed = new MutableLiveData<>(false);
@@ -68,6 +70,10 @@ public class MediaViewModel extends ViewModel {
 
     public LiveData<String> getError() {
         return error;
+    }
+
+    public LiveData<Integer> getStatus() {
+        return status;
     }
 
     public LiveData<Intent> getOpenBrowserIntent() {
@@ -156,6 +162,7 @@ public class MediaViewModel extends ViewModel {
     public void nowPlaying(boolean showLoading) {
         if (showLoading) {
             isLoading.setValue(true);
+            status.setValue(dev.tim9h.rcpandroid.R.string.status_refreshing);
         }
         try {
             var call = rcpService.nowPlaying();
@@ -164,6 +171,7 @@ public class MediaViewModel extends ViewModel {
                 public void onResponse(Call<Track> call, Response<Track> response) {
                     if (showLoading) {
                         isLoading.setValue(false);
+                        status.setValue(null);
                     }
                     var t = response.body();
                     var trackChanged = track.getValue() == null || !track.getValue().equals(t);
@@ -177,6 +185,7 @@ public class MediaViewModel extends ViewModel {
                 public void onFailure(Call<Track> call, Throwable t) {
                     if (showLoading) {
                         isLoading.setValue(false);
+                        status.setValue(null);
                     }
                     Log.e("RCP", "Error while calling API", t);
                     error.postValue(t.getMessage());
@@ -190,6 +199,7 @@ public class MediaViewModel extends ViewModel {
     private void trackInfo(String artist, String title, boolean showLoading) {
         if (showLoading) {
             isLoading.setValue(true);
+            status.setValue(dev.tim9h.rcpandroid.R.string.status_lastfm);
         }
         var call = lastFmService.getTrackInfo(artist, title);
         call.enqueue(new Callback<>() {
@@ -198,6 +208,7 @@ public class MediaViewModel extends ViewModel {
                 trackInfo.postValue(response.body());
                 if (showLoading) {
                     isLoading.setValue(false);
+                    status.setValue(null);
                 }
             }
 
@@ -205,6 +216,7 @@ public class MediaViewModel extends ViewModel {
             public void onFailure(Call<TrackInfoResponse> call, Throwable t) {
                 if (showLoading) {
                     isLoading.setValue(false);
+                    status.setValue(null);
                 }
                 Log.e("RCP", "Error while calling Last.fm API", t);
                 error.postValue(t.getMessage());

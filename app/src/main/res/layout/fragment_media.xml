@@ -32,16 +32,35 @@
                 android:orientation="vertical">
 
                 <!-- Your ImageView and Buttons for track info -->
-                <com.google.android.material.imageview.ShapeableImageView
-                    android:id="@+id/album_art_imageview"
+                <FrameLayout
                     android:layout_width="260dp"
                     android:layout_height="260dp"
                     android:layout_marginTop="0dp"
-                    android:layout_marginBottom="32dp"
-                    android:contentDescription="@string/album_art"
-                    android:scaleType="fitCenter"
-                    app:shapeAppearanceOverlay="@style/RoundedImageView"
-                    tools:srcCompat="@drawable/default_album_cover" />
+                    android:layout_marginBottom="32dp">
+
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:id="@+id/album_art_imageview"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:contentDescription="@string/album_art"
+                        android:scaleType="fitCenter"
+                        app:shapeAppearanceOverlay="@style/RoundedImageView"
+                        tools:srcCompat="@drawable/default_album_cover" />
+
+                    <TextView
+                        android:id="@+id/tv_status"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:padding="24dp"
+                        android:textAlignment="center"
+                        android:textAppearance="?attr/textAppearanceLabelLarge"
+                        android:textColor="?attr/colorOnSurfaceVariant"
+                        android:visibility="gone"
+                        tools:text="Getting song info from Last.fm..."
+                        tools:visibility="visible" />
+
+                </FrameLayout>
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btn_title"

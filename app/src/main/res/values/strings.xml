@@ -36,4 +36,7 @@
     <string name="notification_sent">Notification sent</string>
     <string name="workstation_locked">Workstation locked</string>
     <string name="shutdown_scheduled">Shutdown scheduled</string>
+    <string name="status_refreshing">Refreshing now playing…</string>
+    <string name="status_lastfm">Getting song info from Last.fm…</string>
+    <string name="status_loading_cover">Loading album cover…</string>
 </resources>

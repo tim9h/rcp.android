@@ -22,6 +22,10 @@ import androidx.lifecycle.LifecycleEventObserver;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 
 import dagger.hilt.android.AndroidEntryPoint;
 import dev.tim9h.rcpandroid.R;
@@ -106,6 +110,17 @@ public class MediaFragment extends Fragment {
         viewModel.isVolumeUpPressed().observe(getViewLifecycleOwner(), binding.btnVolup::setPressed);
         viewModel.isVolumeDownPressed().observe(getViewLifecycleOwner(), binding.btnVoldown::setPressed);
 
+        viewModel.getStatus().observe(getViewLifecycleOwner(), statusResId -> {
+            if (statusResId != null && currentAlbumUrl == null) {
+                binding.tvStatus.setText(statusResId);
+                binding.tvStatus.setVisibility(View.VISIBLE);
+                binding.albumArtImageview.setVisibility(View.INVISIBLE);
+            } else {
+                binding.tvStatus.setVisibility(View.GONE);
+                binding.albumArtImageview.setVisibility(View.VISIBLE);
+            }
+        });
+
         return root;
     }
 
@@ -137,15 +152,41 @@ public class MediaFragment extends Fragment {
     }
 
     private void replaceAlbumCover(String url) {
-        if (url.equals(currentAlbumUrl)) {
+        if (url.equals(currentAlbumUrl) && binding.albumArtImageview.getDrawable() != null) {
             return;
         }
         currentAlbumUrl = url;
         Log.i("RCP", "Loading album art from URL: " + url);
+        if (binding.albumArtImageview.getDrawable() == null) {
+            binding.tvStatus.setText(R.string.status_loading_cover);
+            binding.tvStatus.setVisibility(View.VISIBLE);
+            binding.albumArtImageview.setVisibility(View.INVISIBLE);
+        }
         AnimationUtils.performExpressiveTransition(binding.albumArtImageview, () -> {
             if (binding != null) {
                 Glide.with(this)
                         .load(url)
+                        .placeholder(R.drawable.default_album_cover)
+                        .error(R.drawable.default_album_cover)
+                        .listener(new RequestListener<>() {
+                            @Override
+                            public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<android.graphics.drawable.Drawable> target, boolean isFirstResource) {
+                                if (binding != null) {
+                                    binding.tvStatus.setVisibility(View.GONE);
+                                    binding.albumArtImageview.setVisibility(View.VISIBLE);
+                                }
+                                return false;
+                            }
+
+                            @Override
+                            public boolean onResourceReady(android.graphics.drawable.Drawable resource, Object model, Target<android.graphics.drawable.Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                                if (binding != null) {
+                                    binding.tvStatus.setVisibility(View.GONE);
+                                    binding.albumArtImageview.setVisibility(View.VISIBLE);
+                                }
+                                return false;
+                            }
+                        })
                         .into(binding.albumArtImageview);
             }
         });
