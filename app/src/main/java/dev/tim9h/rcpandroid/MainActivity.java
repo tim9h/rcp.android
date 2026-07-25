@@ -8,7 +8,6 @@ import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.lifecycle.ViewModelProvider;
@@ -41,8 +40,7 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        var toolbar = binding.toolbar.findViewById(R.id.toolbar);
-        setSupportActionBar((Toolbar) toolbar);
+        setSupportActionBar(binding.toolbar);
 
         var appBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.navigation_media, R.id.navigation_system, R.id.navigation_lighting)
@@ -61,9 +59,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void fixEdgeToEdgeView() {
-        ViewCompat.setOnApplyWindowInsetsListener(binding.getRoot(), (view, insets) -> {
+        ViewCompat.setOnApplyWindowInsetsListener(binding.container, (view, insets) -> {
             var systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+
             binding.navView.setPadding(0, 0, 0, systemBars.bottom);
+
+            binding.navView.post(() -> {
+                if (binding != null) {
+                    int navHeight = binding.navView.getHeight();
+                    binding.navHostFragmentActivityMain.setPadding(0, 0, 0, navHeight);
+                }
+            });
+
             return insets;
         });
     }
