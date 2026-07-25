@@ -69,12 +69,13 @@ public class MediaFragment extends Fragment {
 
         viewModel.isLoading().observe(getViewLifecycleOwner(), isLoading -> {
             if (isLoading) {
-                binding.btnTitle.setText("...");
-                binding.btnArtist.setText("...");
-                binding.btnAlbum.setText("...");
-                binding.btnTitle.setEnabled(false);
-                binding.btnArtist.setEnabled(false);
-                binding.btnAlbum.setEnabled(false);
+                binding.btnTitle.animate().alpha(0.5f).setDuration(500).start();
+                binding.btnArtist.animate().alpha(0.5f).setDuration(500).start();
+                binding.btnAlbum.animate().alpha(0.5f).setDuration(500).start();
+            } else {
+                binding.btnTitle.animate().alpha(1.0f).setDuration(300).start();
+                binding.btnArtist.animate().alpha(1.0f).setDuration(300).start();
+                binding.btnAlbum.animate().alpha(1.0f).setDuration(300).start();
             }
         });
 
@@ -151,11 +152,10 @@ public class MediaFragment extends Fragment {
 
         viewModel.getStatus().observe(getViewLifecycleOwner(), statusResId -> {
             if (statusResId != null && currentAlbumUrl == null) {
-                binding.tvStatus.setText(statusResId);
-                binding.tvStatus.setVisibility(View.VISIBLE);
+                binding.progressStatus.setVisibility(View.VISIBLE);
                 binding.albumArtImageview.setVisibility(View.INVISIBLE);
             } else {
-                binding.tvStatus.setVisibility(View.GONE);
+                binding.progressStatus.setVisibility(View.GONE);
                 binding.albumArtImageview.setVisibility(View.VISIBLE);
             }
         });
@@ -197,8 +197,7 @@ public class MediaFragment extends Fragment {
         currentAlbumUrl = url;
         Log.i("RCP", "Loading album art from URL: " + url);
         if (binding.albumArtImageview.getDrawable() == null) {
-            binding.tvStatus.setText(R.string.status_loading_cover);
-            binding.tvStatus.setVisibility(View.VISIBLE);
+            binding.progressStatus.setVisibility(View.VISIBLE);
             binding.albumArtImageview.setVisibility(View.INVISIBLE);
         }
         AnimationUtils.performExpressiveTransition(binding.albumArtImageview, () -> {
@@ -211,7 +210,7 @@ public class MediaFragment extends Fragment {
                             @Override
                             public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<android.graphics.drawable.Drawable> target, boolean isFirstResource) {
                                 if (binding != null) {
-                                    binding.tvStatus.setVisibility(View.GONE);
+                                    binding.progressStatus.setVisibility(View.GONE);
                                     binding.albumArtImageview.setVisibility(View.VISIBLE);
                                 }
                                 return false;
@@ -220,7 +219,7 @@ public class MediaFragment extends Fragment {
                             @Override
                             public boolean onResourceReady(android.graphics.drawable.Drawable resource, Object model, Target<android.graphics.drawable.Drawable> target, DataSource dataSource, boolean isFirstResource) {
                                 if (binding != null) {
-                                    binding.tvStatus.setVisibility(View.GONE);
+                                    binding.progressStatus.setVisibility(View.GONE);
                                     binding.albumArtImageview.setVisibility(View.VISIBLE);
                                 }
                                 return false;

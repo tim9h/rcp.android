@@ -47,18 +47,12 @@
                         app:shapeAppearanceOverlay="@style/RoundedImageView"
                         tools:srcCompat="@drawable/default_album_cover" />
 
-                    <TextView
-                        android:id="@+id/tv_status"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="center"
-                        android:padding="24dp"
-                        android:textAlignment="center"
-                        android:textAppearance="?attr/textAppearanceLabelLarge"
-                        android:textColor="?attr/colorOnSurfaceVariant"
-                        android:visibility="gone"
-                        tools:text="Getting song info from Last.fm..."
-                        tools:visibility="visible" />
+                    <com.google.android.material.loadingindicator.LoadingIndicator
+                        android:id="@+id/progress_status"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:visibility="gone" />
 
                 </FrameLayout>
 

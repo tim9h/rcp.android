@@ -53,6 +53,26 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(binding.navView, navController);
 
+        binding.navView.setOnItemSelectedListener(item -> {
+            var handled = NavigationUI.onNavDestinationSelected(item, navController);
+            if (handled) {
+                var view = binding.navView.findViewById(item.getItemId());
+                if (view != null) {
+                    view.animate()
+                            .scaleX(1.1f)
+                            .scaleY(1.1f)
+                            .setDuration(150)
+                            .withEndAction(() -> view.animate()
+                                    .scaleX(1.0f)
+                                    .scaleY(1.0f)
+                                    .setDuration(150)
+                                    .start())
+                            .start();
+                }
+            }
+            return handled;
+        });
+
         mediaViewModel = new ViewModelProvider(this).get(MediaViewModel.class);
 
         fixEdgeToEdgeView();
@@ -85,7 +105,9 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         var id = item.getItemId();
         if (id == R.id.action_settings) {
-            startActivity(new Intent(this, SettingsActivity.class));
+            var intent = new Intent(this, SettingsActivity.class);
+            var options = android.app.ActivityOptions.makeSceneTransitionAnimation(this, binding.toolbar, "shared_toolbar");
+            startActivity(intent, options.toBundle());
             return true;
         }
         return super.onOptionsItemSelected(item);
