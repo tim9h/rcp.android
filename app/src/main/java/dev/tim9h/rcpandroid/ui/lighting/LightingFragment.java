@@ -41,6 +41,7 @@ public class LightingFragment extends Fragment {
         var root = binding.getRoot();
 
         binding.toggleButton.addOnCheckedChangeListener((btn, checked) -> {
+            btn.performHapticFeedback(android.view.HapticFeedbackConstants.CONFIRM);
             viewModel.toggleLed(checked);
             if (!checked) {
                 binding.toggleButton.setBackgroundColor(Color.TRANSPARENT);
@@ -64,7 +65,12 @@ public class LightingFragment extends Fragment {
             binding.brightnessSlider.setValue(getBrightnessFromHexColor(status.color()));
         });
 
-        binding.brightnessSlider.addOnChangeListener((slider, brightness, b) -> binding.colorPickerView.setBrightness(brightness));
+        binding.brightnessSlider.addOnChangeListener((slider, brightness, b) -> {
+            if (b) {
+                slider.performHapticFeedback(android.view.HapticFeedbackConstants.CLOCK_TICK);
+            }
+            binding.colorPickerView.setBrightness(brightness);
+        });
 
         binding.colorPickerView.setOnColorChangedListener(color -> {
             var hex = String.format("#%06X", (0xFFFFFF & color));

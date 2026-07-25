@@ -78,19 +78,49 @@ public class MediaFragment extends Fragment {
             }
         });
 
-        binding.btnTitle.setOnClickListener(view -> viewModel.openLastFmTrack());
-        binding.btnArtist.setOnClickListener(view -> viewModel.openLastFmArtist());
-        binding.btnAlbum.setOnClickListener(view -> viewModel.openLastFmAlbum());
+        binding.btnTitle.setOnClickListener(view -> {
+            view.performHapticFeedback(android.view.HapticFeedbackConstants.CONTEXT_CLICK);
+            viewModel.openLastFmTrack();
+        });
+        binding.btnArtist.setOnClickListener(view -> {
+            view.performHapticFeedback(android.view.HapticFeedbackConstants.CONTEXT_CLICK);
+            viewModel.openLastFmArtist();
+        });
+        binding.btnAlbum.setOnClickListener(view -> {
+            view.performHapticFeedback(android.view.HapticFeedbackConstants.CONTEXT_CLICK);
+            viewModel.openLastFmAlbum();
+        });
 
-        binding.btnStop.setOnClickListener(view -> viewModel.stop());
-        binding.btnMute.setOnClickListener(view -> viewModel.mute());
+        binding.btnStop.setOnClickListener(view -> {
+            view.performHapticFeedback(android.view.HapticFeedbackConstants.LONG_PRESS);
+            viewModel.stop();
+        });
+        binding.btnMute.setOnClickListener(view -> {
+            view.performHapticFeedback(android.view.HapticFeedbackConstants.KEYBOARD_TAP);
+            viewModel.mute();
+        });
 
-        binding.btnPlaypause.setOnClickListener(view -> viewModel.play());
-        binding.btnNext.setOnClickListener(view -> viewModel.next());
-        binding.btnPrevious.setOnClickListener(view -> viewModel.previous());
+        binding.btnPlaypause.setOnClickListener(view -> {
+            view.performHapticFeedback(android.view.HapticFeedbackConstants.CONFIRM);
+            viewModel.play();
+        });
+        binding.btnNext.setOnClickListener(view -> {
+            view.performHapticFeedback(android.view.HapticFeedbackConstants.VIRTUAL_KEY);
+            viewModel.next();
+        });
+        binding.btnPrevious.setOnClickListener(view -> {
+            view.performHapticFeedback(android.view.HapticFeedbackConstants.VIRTUAL_KEY);
+            viewModel.previous();
+        });
 
-        binding.btnVolup.setOnClickListener(view -> viewModel.volumeUp());
-        binding.btnVoldown.setOnClickListener(view -> viewModel.volumeDown());
+        binding.btnVolup.setOnClickListener(view -> {
+            view.performHapticFeedback(android.view.HapticFeedbackConstants.KEYBOARD_TAP);
+            viewModel.volumeUp();
+        });
+        binding.btnVoldown.setOnClickListener(view -> {
+            view.performHapticFeedback(android.view.HapticFeedbackConstants.KEYBOARD_TAP);
+            viewModel.volumeDown();
+        });
 
         viewModel.getError().observe(getViewLifecycleOwner(), error -> {
             Log.e("RCP", error);

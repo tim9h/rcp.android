@@ -40,10 +40,22 @@ public class SystemFragment extends Fragment {
 
         binding = FragmentSystemBinding.inflate(inflater, container, false);
 
-        binding.btnLockWorkstation.setOnClickListener(v -> lockWorkstation());
-        binding.btnShutdownCustom.setOnClickListener(v -> showShutdownDialog());
-        binding.btnShutdownNow.setOnClickListener(v -> viewModel.shutdownNow());
-        binding.btnSendNotification.setOnClickListener(v -> showSendNotificationDialog());
+        binding.btnLockWorkstation.setOnClickListener(v -> {
+            v.performHapticFeedback(android.view.HapticFeedbackConstants.LONG_PRESS);
+            lockWorkstation();
+        });
+        binding.btnShutdownCustom.setOnClickListener(v -> {
+            v.performHapticFeedback(android.view.HapticFeedbackConstants.CONTEXT_CLICK);
+            showShutdownDialog();
+        });
+        binding.btnShutdownNow.setOnClickListener(v -> {
+            v.performHapticFeedback(android.view.HapticFeedbackConstants.LONG_PRESS);
+            viewModel.shutdownNow();
+        });
+        binding.btnSendNotification.setOnClickListener(v -> {
+            v.performHapticFeedback(android.view.HapticFeedbackConstants.CONTEXT_CLICK);
+            showSendNotificationDialog();
+        });
 
         viewModel.getSuccess().observe(getViewLifecycleOwner(), resId -> {
             if (resId != null) {
