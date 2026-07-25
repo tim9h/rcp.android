@@ -22,11 +22,14 @@ import java.text.DecimalFormat;
 import dagger.hilt.android.AndroidEntryPoint;
 import dev.tim9h.rcpandroid.R;
 import dev.tim9h.rcpandroid.databinding.FragmentLightingBinding;
+import dev.tim9h.rcpandroid.ui.utils.AnimationUtils;
 
 @AndroidEntryPoint
 public class LightingFragment extends Fragment {
 
     private FragmentLightingBinding binding;
+
+    private boolean isUpdatingFromViewModel = false;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -40,9 +43,11 @@ public class LightingFragment extends Fragment {
         binding = FragmentLightingBinding.inflate(inflater, container, false);
         var root = binding.getRoot();
 
-        binding.toggleButton.addOnCheckedChangeListener((btn, checked) -> {
+        binding.toggleButton.setOnClickListener(btn -> {
+            var checked = binding.toggleButton.isChecked();
             btn.performHapticFeedback(android.view.HapticFeedbackConstants.CONFIRM);
             viewModel.toggleLed(checked);
+            AnimationUtils.morphButtonToPill(binding.toggleButton, checked);
             if (!checked) {
                 binding.toggleButton.setBackgroundColor(Color.TRANSPARENT);
                 binding.toggleButton.setIconTintResource(R.color.white);
@@ -60,9 +65,21 @@ public class LightingFragment extends Fragment {
 
         viewModel.initButtonState();
         viewModel.getLogiledStatus().observe(getViewLifecycleOwner(), status -> {
+            isUpdatingFromViewModel = true;
             binding.toggleButton.setChecked(status.enabled());
+            AnimationUtils.setButtonPillShape(binding.toggleButton, status.enabled());
+            if (!status.enabled()) {
+                binding.toggleButton.setBackgroundColor(Color.TRANSPARENT);
+                binding.toggleButton.setIconTintResource(R.color.white);
+            } else {
+                int color = Color.parseColor(status.color());
+                binding.toggleButton.setBackgroundColor(color);
+                binding.toggleButton.setIconTintResource(isColorDark(color) ? R.color.white : R.color.black);
+            }
+
             binding.colorPickerView.setColor(status.color());
             binding.brightnessSlider.setValue(getBrightnessFromHexColor(status.color()));
+            isUpdatingFromViewModel = false;
         });
 
         binding.brightnessSlider.addOnChangeListener((slider, brightness, b) -> {
@@ -73,6 +90,7 @@ public class LightingFragment extends Fragment {
         });
 
         binding.colorPickerView.setOnColorChangedListener(color -> {
+            if (isUpdatingFromViewModel) return;
             var hex = String.format("#%06X", (0xFFFFFF & color));
             if (binding.toggleButton.isChecked()) {
                 viewModel.updateLedColor(hex);

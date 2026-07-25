@@ -103,14 +103,17 @@ public class MediaFragment extends Fragment {
 
         binding.btnPlaypause.setOnClickListener(view -> {
             view.performHapticFeedback(android.view.HapticFeedbackConstants.CONFIRM);
+            AnimationUtils.bounceView(view);
             viewModel.play();
         });
         binding.btnNext.setOnClickListener(view -> {
             view.performHapticFeedback(android.view.HapticFeedbackConstants.VIRTUAL_KEY);
+            AnimationUtils.bounceView(view);
             viewModel.next();
         });
         binding.btnPrevious.setOnClickListener(view -> {
             view.performHapticFeedback(android.view.HapticFeedbackConstants.VIRTUAL_KEY);
+            AnimationUtils.bounceView(view);
             viewModel.previous();
         });
 

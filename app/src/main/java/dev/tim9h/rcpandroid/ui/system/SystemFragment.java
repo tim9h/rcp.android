@@ -21,6 +21,7 @@ import dagger.hilt.android.AndroidEntryPoint;
 import dev.tim9h.rcpandroid.R;
 import dev.tim9h.rcpandroid.databinding.DialogTextfieldBinding;
 import dev.tim9h.rcpandroid.databinding.FragmentSystemBinding;
+import dev.tim9h.rcpandroid.ui.utils.AnimationUtils;
 
 @AndroidEntryPoint
 public class SystemFragment extends Fragment {
@@ -42,18 +43,22 @@ public class SystemFragment extends Fragment {
 
         binding.btnLockWorkstation.setOnClickListener(v -> {
             v.performHapticFeedback(android.view.HapticFeedbackConstants.LONG_PRESS);
+            AnimationUtils.bounceView(v);
             lockWorkstation();
         });
         binding.btnShutdownCustom.setOnClickListener(v -> {
             v.performHapticFeedback(android.view.HapticFeedbackConstants.CONTEXT_CLICK);
+            AnimationUtils.bounceView(v);
             showShutdownDialog();
         });
         binding.btnShutdownNow.setOnClickListener(v -> {
             v.performHapticFeedback(android.view.HapticFeedbackConstants.LONG_PRESS);
+            AnimationUtils.bounceView(v);
             viewModel.shutdownNow();
         });
         binding.btnSendNotification.setOnClickListener(v -> {
             v.performHapticFeedback(android.view.HapticFeedbackConstants.CONTEXT_CLICK);
+            AnimationUtils.bounceView(v);
             showSendNotificationDialog();
         });
 
