@@ -1,8 +1,6 @@
 package dev.tim9h.rcpandroid.ui.utils;
 
 import android.view.View;
-import android.view.animation.AccelerateInterpolator;
-import android.view.animation.OvershootInterpolator;
 
 public class AnimationUtils {
 
@@ -12,12 +10,17 @@ public class AnimationUtils {
     }
 
     public static void performExpressiveTransition(View view, Runnable onTransition) {
+        var interpolator = com.google.android.material.motion.MotionUtils.resolveThemeInterpolator(
+                view.getContext(),
+                com.google.android.material.R.attr.motionEasingEmphasizedInterpolator,
+                new android.view.animation.PathInterpolator(0.2f, 0f, 0f, 1f));
+
         view.animate()
                 .scaleX(0.9f)
                 .scaleY(0.9f)
                 .alpha(0f)
                 .setDuration(ANIMATION_DURATION / 2)
-                .setInterpolator(new AccelerateInterpolator())
+                .setInterpolator(interpolator)
                 .withEndAction(() -> {
                     onTransition.run();
                     view.animate()
@@ -25,7 +28,7 @@ public class AnimationUtils {
                             .scaleY(1f)
                             .alpha(1f)
                             .setDuration(ANIMATION_DURATION)
-                            .setInterpolator(new OvershootInterpolator(1.2f))
+                            .setInterpolator(interpolator)
                             .start();
                 }).start();
     }
