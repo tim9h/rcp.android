@@ -9,9 +9,12 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.graphics.ColorUtils;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+
+import com.google.android.material.transition.MaterialFadeThrough;
 
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
@@ -24,6 +27,12 @@ import dev.tim9h.rcpandroid.databinding.FragmentLightingBinding;
 public class LightingFragment extends Fragment {
 
     private FragmentLightingBinding binding;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setEnterTransition(new MaterialFadeThrough());
+    }
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         var viewModel = new ViewModelProvider(this).get(LightingViewModel.class);

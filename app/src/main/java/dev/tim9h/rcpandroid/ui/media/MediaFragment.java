@@ -26,6 +26,7 @@ import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
+import com.google.android.material.transition.MaterialFadeThrough;
 
 import dagger.hilt.android.AndroidEntryPoint;
 import dev.tim9h.rcpandroid.R;
@@ -49,6 +50,14 @@ public class MediaFragment extends Fragment {
     private final Handler handler = new Handler(Looper.getMainLooper());
 
     private static final long NP_REFRESH_INTERVAL_MS = 5000;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        var transition = new MaterialFadeThrough();
+        setEnterTransition(transition);
+        setReenterTransition(transition);
+    }
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         viewModel = new ViewModelProvider(requireActivity()).get(MediaViewModel.class);
