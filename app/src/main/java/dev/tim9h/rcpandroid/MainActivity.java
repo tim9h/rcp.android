@@ -106,8 +106,7 @@ public class MainActivity extends AppCompatActivity {
         var id = item.getItemId();
         if (id == R.id.action_settings) {
             var intent = new Intent(this, SettingsActivity.class);
-            var options = android.app.ActivityOptions.makeSceneTransitionAnimation(this, binding.toolbar, "shared_toolbar");
-            startActivity(intent, options.toBundle());
+            startActivity(intent);
             return true;
         }
         return super.onOptionsItemSelected(item);
